@@ -237,7 +237,9 @@ public class PrimeiroAcessoActivity extends BaseActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+
         //Paulo
+
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
         {
             filePath = data.getData();
