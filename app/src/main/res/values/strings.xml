@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Estrela do Cabula</string>
+    <string name="termo_de_uso">Ao inscrever-se, você concorda com os <a href="http://www.google.com"><u>Termos e Condições</u></a> do App Estrela do Cabula</string>
+
+    <string name="facebook_app_id">1398196200238366</string>
+    <string name="google_web_id">777240972664-btmptpehrmqj4rimkbb3sv8jt7iaeqao.apps.googleusercontent.com</string>
+    <!--string name="default_web_client_id">308612224035-2t3gsarvjqma0o2kvi9723dcbqt3qonm.apps.googleusercontent.com</string-->
+</resources>

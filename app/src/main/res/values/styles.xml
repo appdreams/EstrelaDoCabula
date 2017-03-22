@@ -1,0 +1,84 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- API 14 theme customizations can go here. -->
+        <!--item name="android:windowActionBarOverlay">true</item-->
+        <!--item name="android:homeAsUpIndicator">@drawable/ic_facebook</item-->
+
+        <!-- Support library compatibility -->
+        <!--item name="windowActionBarOverlay">true</item-->
+        <!--item name="homeAsUpIndicator">@drawable/ic_facebook</item-->
+
+        <!--item name="colorControlNormal">@color/white</item-->
+    </style>
+
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:background">#000000</item>
+    </style>
+
+    <!-- Default Buttons -->
+    <style name="ThemeOverlay.DefaultButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Google Buttons -->
+    <style name="ThemeOverlay.GoogleButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@color/google_button</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <!-- Facebook Buttons -->
+    <style name="ThemeOverlay.FacebookButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@color/facebook_button</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Email Buttons -->
+    <style name="ThemeOverlay.EmailButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@color/email_button</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!-- API 14 theme customizations can go here. -->
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_facebook</item>
+
+        <!-- Support library compatibility -->
+        <item name="windowActionBarOverlay">true</item>
+        <item name="homeAsUpIndicator">@drawable/ic_facebook</item>
+    </style>
+
+    <!-- Light EditTexts -->
+    <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark"/>
+
+    <style name="ThemeOverlay.MyTextDetail" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fadeScrollbars">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+</resources>
