@@ -279,7 +279,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
                             circleProgressView.setValueAnimated(0);
 
                             Picasso.with(PrimeiroAcessoActivity.this).load(taskSnapshot.getDownloadUrl()).placeholder(R.drawable.sem_foto).into(imgFoto);
-
+                            internetUrl = taskSnapshot.getDownloadUrl().toString();
                             //and displaying a success toast
                             Toast.makeText(getApplicationContext(), "Foto enviada com sucesso!", Toast.LENGTH_LONG).show();
                         }
@@ -430,7 +430,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
         usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setSenha(senha);
-        usuario.setFoto("");
+        usuario.setFoto(internetUrl);
         usuario.setTipo("M");
         usuario.setAcesso(getDataHora());
         usuario.setOrigem("LOGIN");
