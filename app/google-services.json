@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "777240972664",
+    "firebase_url": "https://estrela-do-cabula.firebaseio.com",
+    "project_id": "estrela-do-cabula",
+    "storage_bucket": "estrela-do-cabula.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777240972664:android:e618bcc5ec0a5b6f",
+        "android_client_info": {
+          "package_name": "br.com.appdreams.estreladocabula"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777240972664-rre4s2ocoomvmvv3epoc02ldsk79kgls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.appdreams.estreladocabula",
+            "certificate_hash": "d6407f4a0cfa5ff7c9c7c3943f0ca61b58f988f0"
+          }
+        },
+        {
+          "client_id": "777240972664-btmptpehrmqj4rimkbb3sv8jt7iaeqao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhhCsXJeJVCD8VfNhMKg5Iq-PlFqqs7V8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777240972664-btmptpehrmqj4rimkbb3sv8jt7iaeqao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
