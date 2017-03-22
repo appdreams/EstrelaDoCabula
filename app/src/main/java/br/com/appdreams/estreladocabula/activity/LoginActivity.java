@@ -1,5 +1,6 @@
 package br.com.appdreams.estreladocabula.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -8,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -514,4 +517,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     public void onConnectionSuspended(int i) {
 
     }
+
+
 }
