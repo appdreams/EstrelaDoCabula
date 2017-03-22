@@ -1,7 +1,9 @@
 package br.com.appdreams.estreladocabula.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,6 +14,8 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -133,7 +137,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
             @Override
             public void onClick(View arg0)
             {
-                if(validaNomeCompleto() && validaEmail() && validaSenha())
+                if(validaFoto() && validaNomeCompleto() && validaEmail() && validaSenha())
                 {
                     loadingShow("","Cadastrando usuário...");
 
@@ -195,7 +199,8 @@ public class PrimeiroAcessoActivity extends BaseActivity
             @Override
             public void onClick(View arg0)
             {
-                showFileChooser();
+                //showFileChooser();
+                checkPermissionExternalStorage();
             }
         });
     }
@@ -204,7 +209,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
     private void showFileChooser()
     {
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image/jpeg");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Selecione a Foto"), PICK_IMAGE_REQUEST);
     }
@@ -232,25 +237,18 @@ public class PrimeiroAcessoActivity extends BaseActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
-            {
-                Uri selectedImageUri = data.getData();
-                selectedPath = getPath(selectedImageUri);
-                //
-                File file = new File(selectedPath);
-                nomeFoto = file.getName();
 
-                try
-                {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                    //imgFoto.setImageBitmap(bitmap);
-                    uploadImage();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
+        {
+            filePath = data.getData();
+            selectedPath = getPath(filePath);
+            //
+            File file = new File(selectedPath);
+            nomeFoto = file.getName();
+
+            uploadImage();
         }
     }
 
@@ -258,7 +256,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
     private void uploadImage()
     {
         //if there is a file to upload
-        if (filePath != null) {
+        if (selectedPath != null) {
             //displaying a progress dialog while upload is going on
             final ProgressDialog progressDialog = new ProgressDialog(this);
             //progressDialog.setTitle("Uploading");
@@ -267,8 +265,8 @@ public class PrimeiroAcessoActivity extends BaseActivity
             circleProgressView.setVisibility(View.VISIBLE);
 
             FirebaseStorage storageReference = FirebaseStorage.getInstance();
-            StorageReference storageRef = storageReference.getReferenceFromUrl("gs://estrela-79b8b.appspot.com");
-            StorageReference riversRef = storageRef.child("fotos/"+nomeFoto);
+            StorageReference storageRef = storageReference.getReferenceFromUrl("gs://estrela-do-cabula.appspot.com");
+            StorageReference riversRef = storageRef.child("fotos/"+System.currentTimeMillis() + ".jpg");
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -325,13 +323,11 @@ public class PrimeiroAcessoActivity extends BaseActivity
         {
             resposta = false;
             imgFoto.setBorderColor(getResources().getColor(R.color.red));
-            imgFoto.setBorderWidth(10);
         }
         else
         {
             resposta = true;
             imgFoto.setBorderColor(getResources().getColor(R.color.colorAccent));
-            imgFoto.setBorderWidth(3);
         }
 
         return resposta;
@@ -458,6 +454,36 @@ public class PrimeiroAcessoActivity extends BaseActivity
         dataHoraAtual = dataAtual+" "+horaAtual;
 
         return dataHoraAtual;
+    }
+
+    private void checkPermissionExternalStorage()
+    {
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        }
+        else
+        {
+            showFileChooser();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+
+            case 0:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED))
+                {
+                    showFileChooser();
+                }
+                break;
+
+            default:
+                break;
+        }
     }
 
 }
