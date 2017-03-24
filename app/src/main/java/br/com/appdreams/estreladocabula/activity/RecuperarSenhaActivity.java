@@ -22,6 +22,8 @@ import br.com.appdreams.estreladocabula.utils.Validacoes;
 
 public class RecuperarSenhaActivity extends BaseActivity
 {
+    private View rootView;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
 
@@ -54,6 +56,7 @@ public class RecuperarSenhaActivity extends BaseActivity
     /* Bind Objetos*/
     private void bindActivity()
     {
+        rootView            =   (View) findViewById(R.id.recuperar_senha);
         tilEmail            =   (TextInputLayout) findViewById(R.id.tilEmail);
         txtEmail            =   (EditText) findViewById(R.id.txtEmail);
         btnEnviar           =   (Button) findViewById(R.id.btnEnviar);
@@ -67,31 +70,28 @@ public class RecuperarSenhaActivity extends BaseActivity
             @Override
             public void onClick(View arg0)
             {
-                if(validaEmail())
-                {
-                    loadingShow("", "Validando email...");
+                if(validaEmail()) {
+                    if (Validacoes.haveNetworkConnection(getContext(), rootView))
+                    {
+                        loadingShow("", "Validando email...");
 
-                    String email        =   txtEmail.getText().toString().trim();
+                        String email = txtEmail.getText().toString().trim();
 
-                    mAuth.sendPasswordResetEmail(email)
-                            .addOnCompleteListener(RecuperarSenhaActivity.this, new OnCompleteListener<Void>()
-                            {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    loadingHide();
+                        mAuth.sendPasswordResetEmail(email)
+                                .addOnCompleteListener(RecuperarSenhaActivity.this, new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        loadingHide();
 
-                                    if (task.isSuccessful())
-                                    {
-                                        Toast.makeText(RecuperarSenhaActivity.this, "Enviámos-lhe instruções para redefinir sua senha!", Toast.LENGTH_SHORT).show();
-                                        finish();
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(RecuperarSenhaActivity.this, "Enviámos-lhe instruções para redefinir sua senha!", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else {
+                                            Toast.makeText(RecuperarSenhaActivity.this, "Falha ao enviar e-mail de redefinição de senha!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                    else
-                                    {
-                                        Toast.makeText(RecuperarSenhaActivity.this, "Falha ao enviar e-mail de redefinição de senha!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                                });
+                    }
                 }
             }
         });

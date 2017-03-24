@@ -53,6 +53,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PrimeiroAcessoActivity extends BaseActivity
 {
+    private View rootView;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
 
@@ -117,8 +119,9 @@ public class PrimeiroAcessoActivity extends BaseActivity
     /* Bind Objetos*/
     private void bindActivity()
     {
+        rootView            =   (View) findViewById(R.id.primeiro_acesso);
         imgFoto             =   (CircleImageView) findViewById(R.id.imgFoto);
-        circleProgressView  =   (CircleProgressView) findViewById(R.id.circleProgressView);
+        //circleProgressView  =   (CircleProgressView) findViewById(R.id.circleProgressView);
         tilNome             =   (TextInputLayout) findViewById(R.id.tilNome);
         tilEmail            =   (TextInputLayout) findViewById(R.id.tilEmail);
         tilSenha            =   (TextInputLayout) findViewById(R.id.tilSenha);
@@ -137,29 +140,29 @@ public class PrimeiroAcessoActivity extends BaseActivity
             @Override
             public void onClick(View arg0)
             {
-                if(validaFoto() && validaNomeCompleto() && validaEmail() && validaSenha())
-                {
-                    loadingShow("","Cadastrando usuário...");
 
-                    String email        =   txtEmail.getText().toString().trim();
-                    String senha        =   txtSenha.getText().toString().trim();
+            if(validaFoto() && validaNomeCompleto() && validaEmail() && validaSenha())
+            {
+                if (Validacoes.haveNetworkConnection(getContext(), rootView))
+                {
+
+                    loadingShow("", "Cadastrando usuário...");
+
+                    String email = txtEmail.getText().toString().trim();
+                    String senha = txtSenha.getText().toString().trim();
 
                     //Create User
                     mAuth.createUserWithEmailAndPassword(email, senha)
-                            .addOnCompleteListener(PrimeiroAcessoActivity.this, new OnCompleteListener<AuthResult>()
-                            {
+                            .addOnCompleteListener(PrimeiroAcessoActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
-                                public void onComplete(@NonNull Task<AuthResult> task)
-                                {
+                                public void onComplete(@NonNull Task<AuthResult> task) {
 
                                     loadingHide();
 
                                     if (!task.isSuccessful())
                                     {
-                                        Toast.makeText(PrimeiroAcessoActivity.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                    }
-                                    else
-                                    {
+                                        Toast.makeText(PrimeiroAcessoActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    } else {
                                         salvarNovoUsuario();
 
                                         Toast.makeText(PrimeiroAcessoActivity.this, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
@@ -170,10 +173,11 @@ public class PrimeiroAcessoActivity extends BaseActivity
                                 }
                             });
                 }
-                else
-                {
-                    alert("ATENÇÃO","Verifique os campos em vermelho!");
-                }
+            }
+            else
+            {
+                alert("ATENÇÃO", "Verifique os campos em vermelho!");
+            }
             }
         });
     }
@@ -254,61 +258,64 @@ public class PrimeiroAcessoActivity extends BaseActivity
     /* Upload da Foto */
     private void uploadImage()
     {
-        //if there is a file to upload
-        if (selectedPath != null) {
-            //displaying a progress dialog while upload is going on
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            //progressDialog.setTitle("Aguarde");
-            progressDialog.show();
-            //circleProgressView.setValueAnimated(0);
-            //circleProgressView.setVisibility(View.VISIBLE);
+        if(Validacoes.haveNetworkConnection(getContext(), rootView))
+        {
+            //if there is a file to upload
+            if (selectedPath != null) {
+                //displaying a progress dialog while upload is going on
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                //progressDialog.setTitle("Aguarde");
+                progressDialog.show();
+                //circleProgressView.setValueAnimated(0);
+                //circleProgressView.setVisibility(View.VISIBLE);
 
-            FirebaseStorage storageReference = FirebaseStorage.getInstance();
-            StorageReference storageRef = storageReference.getReferenceFromUrl("gs://estrela-do-cabula.appspot.com");
-            StorageReference riversRef = storageRef.child("fotos/"+System.currentTimeMillis() + ".jpg");
-            riversRef.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //if the upload is successfull
-                            //hiding the progress dialog
-                            progressDialog.dismiss();
-                            //circleProgressView.setVisibility(View.GONE);
-                            //circleProgressView.setValueAnimated(0);
+                FirebaseStorage storageReference = FirebaseStorage.getInstance();
+                StorageReference storageRef = storageReference.getReferenceFromUrl("gs://estrela-do-cabula.appspot.com");
+                StorageReference riversRef = storageRef.child("fotos/"+System.currentTimeMillis() + ".jpg");
+                riversRef.putFile(filePath)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                //if the upload is successfull
+                                //hiding the progress dialog
+                                progressDialog.dismiss();
+                                //circleProgressView.setVisibility(View.GONE);
+                                //circleProgressView.setValueAnimated(0);
 
-                            Picasso.with(PrimeiroAcessoActivity.this).load(taskSnapshot.getDownloadUrl()).placeholder(R.drawable.sem_foto).into(imgFoto);
-                            internetUrl = taskSnapshot.getDownloadUrl().toString();
-                            //and displaying a success toast
-                            Toast.makeText(getApplicationContext(), "Foto enviada com sucesso!", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            //if the upload is not successfull
-                            //hiding the progress dialog
-                            progressDialog.dismiss();
-                            //circleProgressView.setVisibility(View.GONE);
+                                Picasso.with(PrimeiroAcessoActivity.this).load(taskSnapshot.getDownloadUrl()).placeholder(R.drawable.sem_foto).into(imgFoto);
+                                internetUrl = taskSnapshot.getDownloadUrl().toString();
+                                //and displaying a success toast
+                                Toast.makeText(getApplicationContext(), "Foto enviada com sucesso!", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                //if the upload is not successfull
+                                //hiding the progress dialog
+                                progressDialog.dismiss();
+                                //circleProgressView.setVisibility(View.GONE);
 
-                            //and displaying error message
-                            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            //calculating progress percentage
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                //and displaying error message
+                                Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                //calculating progress percentage
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
-                            //displaying percentage in progress dialog
-                            progressDialog.setMessage("Enviando foto " + ((int) progress) + "%...");
-                            //circleProgressView.setValueAnimated(((int) progress));
-                        }
-                    });
-        }
-        //if there is not any file
-        else {
-            //you can display an error toast
+                                //displaying percentage in progress dialog
+                                progressDialog.setMessage("Enviando foto " + ((int) progress) + "%...");
+                                //circleProgressView.setValueAnimated(((int) progress));
+                            }
+                        });
+            }
+            //if there is not any file
+            else {
+                //you can display an error toast
+            }
         }
     }
 

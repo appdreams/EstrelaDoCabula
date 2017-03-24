@@ -24,6 +24,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.firebase.client.Firebase;
@@ -57,7 +58,8 @@ import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.utils.Validacoes;
 
-public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
+{
 
     private Firebase mFirebase;
     private FirebaseAuth mAuth;
@@ -111,8 +113,10 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             @Override
             public void onSuccess(LoginResult loginResult)
             {
-                //alert("facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
+                Profile profile = Profile.getCurrentProfile();
+                String nome = profile.get
+
+                //handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
@@ -138,12 +142,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 {
                     // User is signed in
                     //alert("onAuthStateChanged:signed_in:" + user.getUid());
+
                     alert(userFirebase.getUid()+"\n"+userFirebase.getDisplayName()+"\n"+userFirebase.getEmail()+"\n"+userFirebase.getPhotoUrl()+"\n"+origem+"\n"+userFirebase.getProviderId());
                     salvarNovoUsuario(userFirebase.getUid(),userFirebase.getDisplayName(),userFirebase.getEmail(),userFirebase.getPhotoUrl().toString());
 
-                    //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    //startActivity(intent);
-                    //finish();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 else
                 {
@@ -392,7 +397,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     /* Salva Ultimo Acesso */
     private void salvarUltimoAcesso()
     {
-        DatabaseReference tbUsuarios = mDatabase.getReference("usuarios");
+        DatabaseReference tbUsuarios = mDatabase.getReference("Usuarios");
         tbUsuarios.child(getUsuarioLogado().getUid()).child("acesso").setValue(getDataHora());
     }
 
@@ -460,7 +465,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     //FaceBook
 
     //GOOGLE
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct)
+    {
         //alert("firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -499,22 +505,25 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         usuario.setOrigem(origem);
         usuario.setStatus("1");
 
-        DatabaseReference tbUsuarios = mDatabase.getReference("usuarios");
+        DatabaseReference tbUsuarios = mDatabase.getReference("Usuarios");
         tbUsuarios.child(usuario.getID()).setValue(usuario);
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult)
+    {
 
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void onConnected(@Nullable Bundle bundle)
+    {
 
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i)
+    {
 
     }
 
