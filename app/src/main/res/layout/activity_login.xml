@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.appdreams.estrela.activity.LoginActivity">
+    android:id="@+id/login"
+    tools:context="br.com.appdreams.estreladocabula.activity.LoginActivity">
 
     <LinearLayout
     android:layout_width="match_parent"
