@@ -57,7 +57,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
     private FirebaseDatabase mDatabase;
 
     private CircleImageView imgFoto;
-    private CircleProgressView circleProgressView;
+    //private CircleProgressView circleProgressView;
     private TextInputLayout tilNome;
     private TextInputLayout tilEmail;
     private TextInputLayout tilSenha;
@@ -68,7 +68,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
     private Button btnSalvar;
 
     //
-    private Bitmap bitmap;
+    //private Bitmap bitmap;
     private Uri filePath;
     private String selectedPath;
     private int PICK_IMAGE_REQUEST  = 1;
@@ -151,6 +151,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task)
                                 {
+
                                     loadingHide();
 
                                     if (!task.isSuccessful())
@@ -219,8 +220,8 @@ public class PrimeiroAcessoActivity extends BaseActivity
     {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        String document_id  = cursor.getString(0);
+        document_id         = document_id.substring(document_id.lastIndexOf(":") + 1);
         cursor.close();
 
         cursor = getContentResolver().query(
@@ -237,9 +238,6 @@ public class PrimeiroAcessoActivity extends BaseActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-
-        //Paulo
-
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
         {
@@ -260,10 +258,10 @@ public class PrimeiroAcessoActivity extends BaseActivity
         if (selectedPath != null) {
             //displaying a progress dialog while upload is going on
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            //progressDialog.setTitle("Uploading");
-            //progressDialog.show();
-            circleProgressView.setValueAnimated(0);
-            circleProgressView.setVisibility(View.VISIBLE);
+            //progressDialog.setTitle("Aguarde");
+            progressDialog.show();
+            //circleProgressView.setValueAnimated(0);
+            //circleProgressView.setVisibility(View.VISIBLE);
 
             FirebaseStorage storageReference = FirebaseStorage.getInstance();
             StorageReference storageRef = storageReference.getReferenceFromUrl("gs://estrela-do-cabula.appspot.com");
@@ -274,9 +272,9 @@ public class PrimeiroAcessoActivity extends BaseActivity
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             //if the upload is successfull
                             //hiding the progress dialog
-                            //progressDialog.dismiss();
-                            circleProgressView.setVisibility(View.GONE);
-                            circleProgressView.setValueAnimated(0);
+                            progressDialog.dismiss();
+                            //circleProgressView.setVisibility(View.GONE);
+                            //circleProgressView.setValueAnimated(0);
 
                             Picasso.with(PrimeiroAcessoActivity.this).load(taskSnapshot.getDownloadUrl()).placeholder(R.drawable.sem_foto).into(imgFoto);
                             internetUrl = taskSnapshot.getDownloadUrl().toString();
@@ -289,8 +287,8 @@ public class PrimeiroAcessoActivity extends BaseActivity
                         public void onFailure(@NonNull Exception exception) {
                             //if the upload is not successfull
                             //hiding the progress dialog
-                            //progressDialog.dismiss();
-                            circleProgressView.setVisibility(View.GONE);
+                            progressDialog.dismiss();
+                            //circleProgressView.setVisibility(View.GONE);
 
                             //and displaying error message
                             Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
@@ -303,9 +301,8 @@ public class PrimeiroAcessoActivity extends BaseActivity
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
                             //displaying percentage in progress dialog
-                            //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-                            //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-                            circleProgressView.setValueAnimated(((int) progress));
+                            progressDialog.setMessage("Enviando foto " + ((int) progress) + "%...");
+                            //circleProgressView.setValueAnimated(((int) progress));
                         }
                     });
         }
@@ -437,7 +434,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
         usuario.setOnline("S");
         usuario.setStatus("1");
 
-        DatabaseReference tbUsuarios = mDatabase.getReference("usuarios");
+        DatabaseReference tbUsuarios = mDatabase.getReference("Usuarios");
         tbUsuarios.child(usuario.getID()).setValue(usuario);
     }
 
@@ -457,6 +454,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
         return dataHoraAtual;
     }
 
+    /* Checa Permissões */
     private void checkPermissionExternalStorage()
     {
         int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -472,8 +470,10 @@ public class PrimeiroAcessoActivity extends BaseActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        switch (requestCode)
+        {
 
             case 0:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED))
@@ -485,6 +485,12 @@ public class PrimeiroAcessoActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
     }
 
 }
