@@ -119,7 +119,7 @@ public class Validacoes
 
         if((haveConnectedWifi == false)&&(haveConnectedMobile == false))
         {
-            Snackbar bar = Snackbar.make(view, "Conexão com a Internet indisponível!", Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener()
+            Snackbar bar = Snackbar.make(view, "Conexão com a Internet indisponível...", Snackbar.LENGTH_LONG).setAction("Ok", new View.OnClickListener()
             {
                         @Override
                         public void onClick(View v) {
