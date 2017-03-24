@@ -32,7 +32,7 @@
       </component>
       <component name="ProjectRootManager" version="2" languageLevel="JDK_1_3" default="true" assert-keyword="false" jdk-15="false" />
       <component name="PropertiesComponent">
-        <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
+        <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
       </component>
       <component name="RunManager">
         <configuration default="true" type="Application" factoryName="Application">
