@@ -66,6 +66,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Map;
 
 import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.model.Usuario;
@@ -419,10 +420,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (!task.isSuccessful()) {
-                            alert("ATENÇÃO","Erro Facebook: "+ task.getException().getMessage());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                        } else {
+                        if (!task.isSuccessful())
+                        {
+                            alert("ATENÇÃO","Já existe uma conta com o mesmo endereço de e-mail, mas com diferentes credenciais de login. Faça login usando o provedor associado a este endereço de e-mail.");
+                            Toast.makeText(LoginActivity.this, "A autenticação falhou.",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
                             String uid = task.getResult().getUser().getUid();
                             String nome = task.getResult().getUser().getDisplayName();
                             String email = task.getResult().getUser().getEmail();
@@ -461,10 +465,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (!task.isSuccessful()) {
-                            alert("ATENÇÃO","Erro Google: "+ task.getException().getMessage());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
-                        } else {
+                        if (!task.isSuccessful())
+                        {
+                            //alert("ATENÇÃO","Erro Google: "+ task.getException().getMessage());
+                            alert("ATENÇÃO","Já existe uma conta com o mesmo endereço de e-mail, mas com diferentes credenciais de login. Faça login usando o provedor associado a este endereço de e-mail.");
+                            Toast.makeText(LoginActivity.this, "A autenticação falhou.",Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
                             String uid = task.getResult().getUser().getUid();
                             String nome = task.getResult().getUser().getDisplayName();
                             String email = task.getResult().getUser().getEmail();
@@ -549,20 +557,44 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     public void buscaUsuario()
     {
-        DatabaseReference mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        Query query = mFirebaseDatabaseReference.child("Usuarios").orderByChild("email").equalTo("pvincius@gmail.com").limitToFirst(1);
-        query.addValueEventListener(new ValueEventListener() {
+        alert("Foi!");
+
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //DatabaseReference myRef = database.getReference("Usuarios");
+
+        DatabaseReference raiz = FirebaseDatabase.getInstance().getReference();
+        Query query1 = raiz.child("Usuarios").orderByChild("nome").equalTo("Paulo Vinicius").limitToFirst(1);
+        //Query query1 = raiz.child("Usuarios").child("001");
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String valor = dataSnapshot.getValue(String.class);
-                alert(valor);
+                //Passar os dados para a interface grafica
+                if (dataSnapshot.exists())
+                {
+                    alert(dataSnapshot.toString());
+
+                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                    alert(usuario.getEmail());
+
+                    /*for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
+                    {
+                        alert(childSnapshot.getKey()+" = "+childSnapshot.getValue());
+                    }*/
+                }
+                else
+                {
+                    alert("DataSnapshot não existe!");
+                }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onCancelled(DatabaseError databaseError)
+            {
+                //Se ocorrer um erro
+                alert(databaseError.getMessage().toString());
             }
         });
+
 
     }
 }
