@@ -573,6 +573,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 {
                     alert(dataSnapshot.toString());
 
+                    //
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
                     alert(usuario.getEmail());
 
