@@ -6,16 +6,16 @@ package br.com.appdreams.estreladocabula.model;
 
 public class Usuario
 {
-    private String id;
-    private String nome;
-    private String email;
-    private String senha;
-    private String tipo;
-    private String foto;
-    private String acesso;
-    private String online;
-    private String origem;
-    private String status;
+    public  String id;
+    public  String nome;
+    public  String email;
+    public  String senha;
+    public  String tipo;
+    public  String foto;
+    public  String acesso;
+    public  String online;
+    public  String origem;
+    public  String status;
 
     public Usuario()
     {
@@ -35,7 +35,7 @@ public class Usuario
         this.online = online;
         this.origem = origem;
         this.status = status;
-    }
+    }/**/
 
     public String getID()
     {
