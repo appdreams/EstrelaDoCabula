@@ -74,12 +74,14 @@ import br.com.appdreams.estreladocabula.utils.Validacoes;
 
 public class LoginActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
 {
-    private View rootView;
-
+    //Firebase
     private Firebase mFirebase;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseDatabase mFirebaseDatabase;
+    //Firebase
 
+    //Geral
+    private View rootView;
     private ImageView imgLogo;
     private TextView txtEsqueceuSenha;
     private TextInputLayout tilEmail;
@@ -90,12 +92,15 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     private Button btnGoogle;
     private Button btnFacebook;
     private Button btnNovaConta;
+    //Geral
 
+    //Flasg
     private String origem;
+    private Boolean respsotaAchouUsuario = false;
+    //Flasg
 
     //FaceBook
     private CallbackManager mFacebookCallbackManager;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private final int FACEBOOK_LOG_IN_REQUEST_CODE = 64206;
     //FACEBOOK
 
@@ -197,13 +202,10 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             @Override
             public void onClick(View arg0)
             {
-
                     if(validaEmail() && validaSenha())
                     {
                         if(Validacoes.haveNetworkConnection(getContext(), rootView))
                         {
-                            mFirebaseAuth.removeAuthStateListener(mAuthListener);
-
                             loadingShow("", "Validando usuário...");
 
                             String email = txtEmail.getText().toString().trim();
@@ -211,16 +213,20 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
                             //authenticate user
                             mFirebaseAuth.signInWithEmailAndPassword(email, senha)
-                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>()
+                                    {
                                         @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                        public void onComplete(@NonNull Task<AuthResult> task)
+                                        {
                                             loadingHide();
 
-                                            if (!task.isSuccessful()) {
-                                                mFirebaseAuth.addAuthStateListener(mAuthListener);
+                                            if (!task.isSuccessful())
+                                            {
                                                 //Toast.makeText(LoginActivity.this, task.getException().getMessage(),Toast.LENGTH_LONG).show();
                                                 Toast.makeText(LoginActivity.this, "Autenticação falhou, verifique seu e-mail e senha!", Toast.LENGTH_SHORT).show();
-                                            } else {
+                                            }
+                                            else
+                                            {
                                                 salvarUltimoAcesso();
 
                                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -281,14 +287,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             @Override
             public void onClick(View arg0)
             {
-                //Intent intent = new Intent(LoginActivity.this, PrimeiroAcessoActivity.class);
-                //startActivity(intent);
-
-                //salvarNovoUsuario("001", "Paulo Vinicius", "pvincius@gmail.com", "foto1.jpg");
-                //salvarNovoUsuario("002", "Ailema Barbosa", "ailema@bol.com.br", "foto2.jpg");
-                //salvarNovoUsuario("003", "Diego Schramm", "diego@yahoo.com", "foto3.jpg");
-
-                buscaUsuario();
+                Intent intent = new Intent(LoginActivity.this, PrimeiroAcessoActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -395,7 +395,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         LoginManager.getInstance().registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                alert("onSuccess");
+                //alert("onSuccess");
                 handleFacebookAccessToken(loginResult.getAccessToken());
                 // success
             }
@@ -431,9 +431,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                             String nome = task.getResult().getUser().getDisplayName();
                             String email = task.getResult().getUser().getEmail();
                             Uri foto = task.getResult().getUser().getPhotoUrl();
-                            alert(uid+"\n"+nome+"\n"+email+"\n"+foto.toString());
-                            //startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                            //finish();
+                            //alert(uid+"\n"+nome+"\n"+email+"\n"+foto.toString());
+                            //alert(uid);
+
+                            buscaUsuario(uid, nome, email, foto.toString());
+
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         }
 
                     }
@@ -477,9 +481,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                             String nome = task.getResult().getUser().getDisplayName();
                             String email = task.getResult().getUser().getEmail();
                             Uri foto = task.getResult().getUser().getPhotoUrl();
-                            alert(uid+"\n"+nome+"\n"+email+"\n"+foto.toString());
-                            //startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                            //finish();
+                            //alert(uid+"\n"+nome+"\n"+email+"\n"+foto.toString());
+
+                            buscaUsuario(uid, nome, email, foto.toString());
+
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         }
 
                     }
@@ -494,7 +501,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     //GOOGLE E FACEBOOK
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GOOGLE_SIGN_IN)
@@ -555,36 +563,51 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
     }
 
-    public void buscaUsuario()
+    public void buscaUsuario(final String uid, final String nome, final String email, final String foto)
     {
-        alert("Foi!");
+        //alert(uid);
 
         //FirebaseDatabase database = FirebaseDatabase.getInstance();
         //DatabaseReference myRef = database.getReference("Usuarios");
 
         DatabaseReference raiz = FirebaseDatabase.getInstance().getReference();
-        Query query1 = raiz.child("Usuarios").orderByChild("nome").equalTo("Paulo Vinicius").limitToFirst(1);
-        //Query query1 = raiz.child("Usuarios").child("001");
-        query1.addListenerForSingleValueEvent(new ValueEventListener() {
+        //Query query = raiz.child("Usuarios").orderByChild("email").equalTo(email).limitToFirst(1);
+        Query query = raiz.child("Usuarios").child(uid);
+        //Query query = raiz.child("Usuarios").orderByChild("nome");
+        //Query query = raiz.child("Usuarios").child("001");
+        query.addListenerForSingleValueEvent(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 //Passar os dados para a interface grafica
                 if (dataSnapshot.exists())
                 {
-                    alert(dataSnapshot.toString());
+                    //respsotaAchouUsuario = true;
+                    //alert("Achou!");
+                    //alert("Achou!");
+                    //alert(dataSnapshot.toString());
 
                     //
-                    Usuario usuario = dataSnapshot.getValue(Usuario.class);
-                    alert(usuario.getEmail());
+                    //Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                    //alert(usuario.getEmail());
 
                     /*for (DataSnapshot childSnapshot : dataSnapshot.getChildren())
                     {
                         alert(childSnapshot.getKey()+" = "+childSnapshot.getValue());
                     }*/
+
+                    /*for (DataSnapshot noteSnapshot: dataSnapshot.getChildren())
+                    {
+                        Usuario usuario1 = noteSnapshot.getValue(Usuario.class);
+                        alert(usuario1.getEmail());
+                    }*/
+                    salvarUltimoAcesso();
                 }
                 else
                 {
-                    alert("DataSnapshot não existe!");
+                    //alert("Não Achou!");
+                    salvarNovoUsuario(uid, nome, email, foto.toString());
                 }
             }
 
@@ -595,7 +618,5 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 alert(databaseError.getMessage().toString());
             }
         });
-
-
     }
 }
