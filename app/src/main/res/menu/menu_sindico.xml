@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.MainActivity">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_menu_home_m"
+            android:icon="@drawable/ic_home_48"
+            android:title="Home" />
+
+        <item android:title="Ferramentas - Sindíco">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_item_comunicacao_m"
+                        android:icon="@drawable/ic_voice_48"
+                        android:title="Comunicação" />
+                    <item
+                        android:id="@+id/nav_item_unidade_m"
+                        android:icon="@drawable/ic_apartment_48"
+                        android:title="Condominío" />
+                    <item
+                        android:id="@+id/nav_item_documentos_m"
+                        android:icon="@drawable/ic_documents_48"
+                        android:title="Documentos" />
+                    <item
+                        android:id="@+id/nav_item_servicos_m"
+                        android:icon="@drawable/ic_puzzle_48"
+                        android:title="Serviços" />
+                </group>
+            </menu>
+
+        </item>
+        <group
+            android:id="@+id/menu_group_3_m"
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_item_suporte_m"
+                android:icon="@drawable/ic_online_support_48"
+                android:title="Suporte" />
+        </group>
+        <item android:title="Configurações">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_item_dados_pessoais_m"
+                        android:icon="@drawable/ic_contacts_48"
+                        android:title="Dados Pessoais" />
+                    <item
+                        android:id="@+id/nav_item_configuracao_geral_m"
+                        android:icon="@drawable/ic_settings_48"
+                        android:title="Configuração Geral" />
+                </group>
+            </menu>
+
+        </item>
+        <group
+            android:id="@+id/menu_group_4_m"
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_menu_sair_m"
+                android:icon="@drawable/ic_exit_48"
+                android:title="Sair" />
+        </group>
+    </group>
+</menu>

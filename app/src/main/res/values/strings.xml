@@ -6,4 +6,14 @@
     <string name="google_web_id">777240972664-btmptpehrmqj4rimkbb3sv8jt7iaeqao.apps.googleusercontent.com</string>
     <string name="url_storage_firebase">gs://estrela-do-cabula.appspot.com</string>
     <!--string name="default_web_client_id">308612224035-2t3gsarvjqma0o2kvi9723dcbqt3qonm.apps.googleusercontent.com</string-->
+
+    <string name="teste1">Teste 1</string>
+    <string name="teste2">Teste 2</string>
+    <string name="teste3">Teste 3</string>
+    <string name="teste4">Teste 4</string>
+    <string name="teste5">Teste 5</string>
+    <string name="teste6">Teste 6</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

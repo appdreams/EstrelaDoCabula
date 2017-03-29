@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.MainActivity">
+
+    <group
+        android:id="@+id/md_menu_second_group_0"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_menu_home"
+            android:icon="@drawable/ic_cpu_48"
+            android:title="Home" />
+
+        <item android:title="Ferramentas">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_item_carros_todos"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Processo Seletivo" />
+                    <item
+                        android:id="@+id/nav_item_carros_classicos"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Avaliação do Colaborador" />
+                    <item
+                        android:id="@+id/nav_item_carros_esportivos"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Cadastro de Escolas" />
+                    <item
+                        android:id="@+id/nav_item_carros_luxo"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Consultar Candidato" />
+                    <item
+                        android:id="@+id/nav_item_site_livro"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Downloads de Material" />
+                    <item
+                        android:id="@+id/nav_item_settings"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Envio de Mensagens" />
+                    <item
+                        android:id="@+id/sub_menu_5"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Montagem de Equipe" />
+                    <item
+                        android:id="@+id/sub_menu_6"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Registro de Ocorrências" />
+                    <item
+                        android:id="@+id/sub_menu_7"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Relação de Equipe" />
+                </group>
+            </menu>
+
+        </item>
+        <group
+            android:id="@+id/md_menu_second_group_1"
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/menu_8"
+                android:icon="@drawable/ic_cpu_48"
+                android:title="Suporte" />
+        </group>
+        <item android:title="Configurações">
+
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/sub_menu2_1"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Dados Pessoais" />
+                    <item
+                        android:id="@+id/sub_menu2_2"
+                        android:icon="@drawable/ic_cpu_48"
+                        android:title="Usuário de Acesso" />
+                </group>
+            </menu>
+
+        </item>
+        <group
+            android:id="@+id/md_menu_second_group_2"
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_menu_sair"
+                android:icon="@drawable/ic_cpu_48"
+                android:title="Sair" />
+        </group>
+    </group>
+</menu>

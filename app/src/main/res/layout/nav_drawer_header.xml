@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerNavDrawerListViewHeader"
+    android:layout_width="match_parent"
+    android:layout_height="164dp"
+    android:layout_gravity="start"
+    android:background="#ff0000"
+    tools:ignore="MissingPrefix">
+    <!-- Img fundo -->
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/nav_drawer_header1" />
+
+    <!-- Logo usuário -->
+    <!--br.com.consultec.corretor.view.RoundedImageView
+        android:id="@+id/imgUserPhoto"
+        android:layout_width="@dimen/navDrawerPhoto_layout_width"
+        android:layout_height="@dimen/navDrawerPhoto_layout_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/navDrawerPhoto_layout_marginLeft"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/foto"/-->
+
+    <!-- Foto Usuário -->
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imgFoto"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/sem_foto" />
+
+    <LinearLayout
+        android:id="@+id/userData"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_alignBottom="@+id/imgBackground"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <!-- Nome usuário -->
+        <TextView
+            android:id="@+id/txtNome"
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+        <!-- Email usuário -->
+        <TextView
+            android:id="@+id/txtEmail"
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+</RelativeLayout>
