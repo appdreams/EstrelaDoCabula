@@ -6,6 +6,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="windowActionBar">false</item>
+        <!--item name="windowActionModeOverlay">true</item-->
+        <!--item name="android:statusBarColor">@android:color/transparent</item-->
+
         <!-- API 14 theme customizations can go here. -->
         <!--item name="android:windowActionBarOverlay">true</item-->
         <!--item name="android:homeAsUpIndicator">@drawable/ic_facebook</item-->
@@ -16,6 +20,21 @@
 
         <!--item name="colorControlNormal">@color/white</item-->
     </style>
+
+    <!-- Tema base + NoActionBar -->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Tema base + NoActionBar -->
+    <style name="AppTheme.NoActionBar.NavDrawer">
+
+    </style>
+
+    <!-- Temas para a Toolbar, ver include_toolbar.xml -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <style name="Divider">

@@ -117,10 +117,10 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
         FacebookSdk.sdkInitialize(getApplicationContext()); // for facebook log in
 
+        bindActivity();
+
         firebaseAuth();
         firebaseDatabase();
-
-        bindActivity();
 
         addListenerOnButtonLogin();
         addListenerOnButtonGoogle();
@@ -175,9 +175,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
         if (mFirebaseAuth.getCurrentUser() != null)
         {
-            Toast.makeText(LoginActivity.this, "Usuário já logado no sistema!",Toast.LENGTH_LONG).show();
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
+            if(Validacoes.haveNetworkConnection(getContext(), rootView))
+            {
+                Toast.makeText(LoginActivity.this, "Usuário já logado no sistema!",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
         }/**/
     }
 
@@ -368,6 +371,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
     {
         DatabaseReference tbUsuarios = mFirebaseDatabase.getReference("Usuarios");
         tbUsuarios.child(getUsuarioLogado().getUid()).child("acesso").setValue(getDataHora());
+        tbUsuarios.child(getUsuarioLogado().getUid()).child("online").setValue("S");
     }
 
     /* Get Data Hora Atual*/
