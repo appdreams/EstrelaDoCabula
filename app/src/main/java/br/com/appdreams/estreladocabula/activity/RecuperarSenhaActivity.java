@@ -70,7 +70,8 @@ public class RecuperarSenhaActivity extends BaseActivity
             @Override
             public void onClick(View arg0)
             {
-                if(validaEmail()) {
+                if(validaEmail())
+                {
                     if (Validacoes.haveNetworkConnection(getContext(), rootView))
                     {
                         loadingShow("", "Validando email...");
@@ -78,16 +79,21 @@ public class RecuperarSenhaActivity extends BaseActivity
                         String email = txtEmail.getText().toString().trim();
 
                         mAuth.sendPasswordResetEmail(email)
-                                .addOnCompleteListener(RecuperarSenhaActivity.this, new OnCompleteListener<Void>() {
+                                .addOnCompleteListener(RecuperarSenhaActivity.this, new OnCompleteListener<Void>()
+                                {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
+                                    public void onComplete(@NonNull Task<Void> task)
+                                    {
                                         loadingHide();
 
-                                        if (task.isSuccessful()) {
+                                        if (task.isSuccessful())
+                                        {
                                             Toast.makeText(RecuperarSenhaActivity.this, "Enviámos-lhe instruções para redefinir sua senha!", Toast.LENGTH_SHORT).show();
                                             finish();
-                                        } else {
-                                            Toast.makeText(RecuperarSenhaActivity.this, "Falha ao enviar e-mail de redefinição de senha!", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(RecuperarSenhaActivity.this, "O Email informado não foi localizado!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });

@@ -54,7 +54,14 @@ public class Usuario
 
     public void setNome(String nome)
     {
-        this.nome = nome;
+        if(nome == "")
+        {
+            this.nome = "";
+        }
+        else
+        {
+            this.nome = nome;
+        }
     }
 
     public String getEmail()
@@ -64,7 +71,14 @@ public class Usuario
 
     public void setEmail(String email)
     {
-        this.email = email;
+        if(email == "")
+        {
+            this.email = "";
+        }
+        else
+        {
+            this.email = email;
+        }
     }
 
     public String getSenha()
@@ -74,7 +88,14 @@ public class Usuario
 
     public void setSenha(String senha)
     {
-        this.senha = senha;
+        if(senha == "")
+        {
+            this.senha = "";
+        }
+        else
+        {
+            this.senha = senha;
+        }
     }
 
     public String getTipo()
@@ -84,7 +105,14 @@ public class Usuario
 
     public void setTipo(String tipo)
     {
-        this.tipo = tipo;
+        if(tipo == "")
+        {
+            this.tipo = "";
+        }
+        else
+        {
+            this.tipo = tipo;
+        }
     }
 
     public String getFoto()
@@ -94,7 +122,14 @@ public class Usuario
 
     public void setFoto(String foto)
     {
-        this.foto = foto;
+        if(foto == "")
+        {
+            this.foto = "";
+        }
+        else
+        {
+            this.foto = foto;
+        }
     }
 
     public String getAcesso()
@@ -104,7 +139,14 @@ public class Usuario
 
     public void setAcesso(String acesso)
     {
-        this.acesso = acesso;
+        if(acesso == "")
+        {
+            this.acesso = "";
+        }
+        else
+        {
+            this.acesso = acesso;
+        }
     }
 
     public String getOnline()
@@ -114,7 +156,14 @@ public class Usuario
 
     public void setOnline(String online)
     {
-        this.online = online;
+        if(online == "")
+        {
+            this.online = "";
+        }
+        else
+        {
+            this.online = online;
+        }
     }
 
     public String getStatus()
@@ -124,14 +173,29 @@ public class Usuario
 
     public void setStatus(String status)
     {
-        this.status = status;
+        if(status == "")
+        {
+            this.status = "";
+        }
+        else
+        {
+            this.status = status;
+        }
     }
 
     public String getOrigem() {
         return origem;
     }
 
-    public void setOrigem(String origem) {
-        this.origem = origem;
+    public void setOrigem(String origem)
+    {
+        if(origem == "")
+        {
+            this.origem = "";
+        }
+        else
+        {
+            this.origem = origem;
+        }
     }
 }

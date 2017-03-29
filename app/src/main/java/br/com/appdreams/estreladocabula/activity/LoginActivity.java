@@ -249,7 +249,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             @Override
             public void onClick(View arg0)
             {
-
                 if (Validacoes.haveNetworkConnection(getContext(), rootView))
                 {
                     //alert("ATENÇÃO","Google!");

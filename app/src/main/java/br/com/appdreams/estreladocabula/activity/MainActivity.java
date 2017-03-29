@@ -14,15 +14,20 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import br.com.appdreams.estreladocabula.R;
+import br.com.appdreams.estreladocabula.model.Usuario;
 
 public class MainActivity extends BaseActivity
 {
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDatabase mDatabase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseDatabase mFirebaseDatabase;
 
     private Button btnSair;
 
@@ -32,11 +37,12 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //firebaseAuth();
+        firebaseAuth();
         bindActivity();
         addListenerOnButtonSair();
 
 
+        alert(getUsuario().getNome());
     }
 
 
@@ -64,6 +70,54 @@ public class MainActivity extends BaseActivity
         });
     }
 
+    protected void firebaseAuth()
+    {
+        //Get Firebase auth instance
+        mFirebaseAuth = FirebaseAuth.getInstance();
+    }
 
+    private String getUsuarioUID()
+    {
+        FirebaseUser usuarioLogado = mFirebaseAuth.getCurrentUser();
+        return usuarioLogado.getUid();
+    }
+
+    /* Get Usuário Logado*/
+    private Usuario getUsuario()
+    {
+        final Usuario usuario = new Usuario();
+
+        DatabaseReference raiz = FirebaseDatabase.getInstance().getReference();
+        Query query = raiz.child("Usuarios").child(getUsuarioUID());
+        query.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                //Passar os dados para a interface grafica
+                if (dataSnapshot.exists())
+                {
+                    for (DataSnapshot noteSnapshot: dataSnapshot.getChildren())
+                    {
+                        usuario = noteSnapshot.getValue(Usuario.class);
+                        alert(usuario.getEmail());
+                        break;
+                    }
+                }
+                else
+                {
+                    alert("Não Achou!");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+                //Se ocorrer um erro
+                alert(databaseError.getMessage().toString());
+            }
+        });
+        return usuario;
+    }
 
 }
