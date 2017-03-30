@@ -17,11 +17,11 @@
         <include layout="@layout/include_toolbar" />
 
         <!-- Nome Usuário -->
-        <TextView
+        <!--TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtNome"
-            android:text="" />
+            android:text="" /-->
 
         <!-- Conteúdo: layout de marcação para fragments -->
         <FrameLayout

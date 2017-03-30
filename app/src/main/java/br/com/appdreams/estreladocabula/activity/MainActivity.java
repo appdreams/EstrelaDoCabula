@@ -1,14 +1,12 @@
 package br.com.appdreams.estreladocabula.activity;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
@@ -115,11 +113,13 @@ public class MainActivity extends BaseActivity
                 {
                     setUsuario(dataSnapshot.getValue(Usuario.class));
 
-                    txtNome.setText(getUsuario().getNome());
+                    //txtNome.setText(getUsuario().getNome());
 
                     setNavHeaderValues(navigationView, getUsuario().getNome(), getUsuario().getEmail(), getUsuario().getFoto(), R.drawable.nav_drawer_header2);
 
                     setMenu(getUsuario().getTipo());
+
+                    replaceFragment(new HomeFragment());
 
                     loadingHide();
                 }
@@ -167,12 +167,7 @@ public class MainActivity extends BaseActivity
         switch (menuItem.getItemId())
         {
             case R.id.nav_menu_home_m:
-                //replaceFragment(new HomeFragment());
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                HomeFragment fragment = new HomeFragment();
-                fragmentTransaction.add(R.id.container, fragment);
-                fragmentTransaction.commit();
+                replaceFragment(new HomeFragment());
                 break;
             case R.id.nav_item_carros_todos:
                 // Nada aqui pois somente a MainActivity possui menu lateral
