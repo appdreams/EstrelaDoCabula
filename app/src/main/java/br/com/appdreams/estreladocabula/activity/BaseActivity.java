@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -159,8 +160,8 @@ public class BaseActivity extends BaseActivityUtils
     // Adiciona o fragment no centro da tela
     protected void replaceFragment(Fragment fragment)
     {
-        //toast("OK!");
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "TAG").commit();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override

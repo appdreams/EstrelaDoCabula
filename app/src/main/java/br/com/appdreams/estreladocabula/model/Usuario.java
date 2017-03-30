@@ -15,6 +15,8 @@ public class Usuario
     public  String acesso;
     public  String online;
     public  String origem;
+    private String bloco;
+    private String apartamento;
     public  String status;
 
     public Usuario()
@@ -22,7 +24,7 @@ public class Usuario
         // Default constructor required for calls to DataSnapshot.getValue(Usuario.class)
     }
 
-    public Usuario(String id, String nome, String email, String senha, String tipo, String foto, String acesso, String online, String origem, String status)
+    public Usuario(String id, String nome, String email, String senha, String tipo, String foto, String acesso, String online, String origem, String bloco, String apartamento, String status)
     {
 
         this.id     = id;
@@ -34,6 +36,8 @@ public class Usuario
         this.acesso = acesso;
         this.online = online;
         this.origem = origem;
+        this.bloco = bloco;
+        this.apartamento = apartamento;
         this.status = status;
     }/**/
 
@@ -183,7 +187,8 @@ public class Usuario
         }
     }
 
-    public String getOrigem() {
+    public String getOrigem()
+    {
         return origem;
     }
 
@@ -196,6 +201,40 @@ public class Usuario
         else
         {
             this.origem = origem;
+        }
+    }
+
+    public String getBloco()
+    {
+        return bloco;
+    }
+
+    public void setBloco(String bloco)
+    {
+        if(bloco == "")
+        {
+            this.bloco = "";
+        }
+        else
+        {
+            this.bloco = bloco;
+        }
+    }
+
+    public String getApartamento()
+    {
+        return apartamento;
+    }
+
+    public void setApartamento(String apartamento)
+    {
+        if(apartamento == "")
+        {
+            this.apartamento = "";
+        }
+        else
+        {
+            this.apartamento = apartamento;
         }
     }
 }

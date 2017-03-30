@@ -5,15 +5,22 @@
     tools:context="br.com.appdreams.estreladocabula.fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragmento Home" />
-    <ListView
-        android:id="@+id/lwListaDeUsuarios"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:text="Fragmento Home" /-->
 
-    </ListView>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvListaDeUsuarios"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/pbCarregando"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:visibility="gone"/>
 
 </FrameLayout>
