@@ -1,9 +1,11 @@
 package br.com.appdreams.estreladocabula.model;
 
+import org.parceler.Parcel;
+
 /**
  * Created by Paulo on 17/03/2017.
  */
-
+@Parcel
 public class Usuario
 {
     public  String id;
@@ -15,8 +17,8 @@ public class Usuario
     public  String acesso;
     public  String online;
     public  String origem;
-    private String bloco;
-    private String apartamento;
+    public String bloco;
+    public String apartamento;
     public  String status;
 
     public Usuario()

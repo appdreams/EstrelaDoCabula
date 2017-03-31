@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import at.grabner.circleprogress.CircleProgressView;
+//import at.grabner.circleprogress.CircleProgressView;
 import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.utils.Validacoes;

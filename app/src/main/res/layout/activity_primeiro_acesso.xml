@@ -39,7 +39,7 @@
                     app:civ_border_width="3dp"
                     app:civ_border_color="@color/colorAccent"/>
 
-                <at.grabner.circleprogress.CircleProgressView
+                <!--at.grabner.circleprogress.CircleProgressView
                     android:id="@+id/circleProgressView"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
@@ -62,7 +62,7 @@
                     CircleProgressView:cpv_unitScale="1"
                     CircleProgressView:cpv_value="0"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="gone"/>
+                    android:visibility="gone"/-->
 
             </FrameLayout>
 

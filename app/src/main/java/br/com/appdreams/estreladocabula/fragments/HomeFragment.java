@@ -1,44 +1,35 @@
 package br.com.appdreams.estreladocabula.fragments;
 
 import android.app.Activity;
-import android.graphics.Movie;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.annotations.Nullable;
+import com.firebase.ui.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.appdreams.estreladocabula.R;
-import br.com.appdreams.estreladocabula.activity.LoginActivity;
+import br.com.appdreams.estreladocabula.adapter.UsuarioAdapterRecycleview;
 import br.com.appdreams.estreladocabula.adapter.UsuariosAdapter;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.utils.DividerItemDecoration;
 import br.com.appdreams.estreladocabula.utils.RecyclerTouchListener;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-
-import com.firebase.ui.FirebaseListAdapter;
-import com.firebase.ui.FirebaseRecyclerAdapter;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 
 public class HomeFragment extends android.support.v4.app.Fragment
@@ -55,6 +46,17 @@ public class HomeFragment extends android.support.v4.app.Fragment
     private DatabaseReference mRestaurantReference;
     private FirebaseRecyclerAdapter mFirebaseAdapter;
 
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference childRef;
+
+    private Query mQuery;
+    private UsuarioAdapterRecycleview mMyAdapter;
+    private ArrayList<Usuario> mAdapterItems;
+    private ArrayList<String> mAdapterKeys;
+
+    private final static String SAVED_ADAPTER_ITEMS = "SAVED_ADAPTER_ITEMS";
+    private final static String SAVED_ADAPTER_KEYS = "SAVED_ADAPTER_KEYS";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -70,14 +72,14 @@ public class HomeFragment extends android.support.v4.app.Fragment
         //lvListaDeUsuarios = (ListView) getView().findViewById(R.id.lvListaDeUsuarios);
         rvListaDeUsuarios = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
 
-        mAdapter = new UsuariosAdapter(usuariosList);
+        //mAdapter = new UsuariosAdapter(usuariosList);
 
         rvListaDeUsuarios.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvListaDeUsuarios.setLayoutManager(mLayoutManager);
         rvListaDeUsuarios.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         rvListaDeUsuarios.setItemAnimator(new DefaultItemAnimator());
-        rvListaDeUsuarios.setAdapter(mAdapter);
+        //rvListaDeUsuarios.setAdapter(mAdapter);
 
         rvListaDeUsuarios.addOnItemTouchListener(
                 new RecyclerTouchListener(getActivity(), rvListaDeUsuarios,
@@ -86,7 +88,7 @@ public class HomeFragment extends android.support.v4.app.Fragment
                             @Override
                             public void onClick(View view, int position)
                             {
-                                Usuario usuario = usuariosList.get(position);
+                                Usuario usuario = mAdapterItems.get(position);
                                 Toast.makeText(getApplicationContext(), usuario.getNome(), Toast.LENGTH_SHORT).show();
                             }
                             @Override
@@ -107,13 +109,16 @@ public class HomeFragment extends android.support.v4.app.Fragment
                             }
                         }));
 
-        prepareMovieData();
+        //prepareMovieData();
 
         //FIREBASE
-        carregaDados();
+        //carregaDados();
         //FIREBASE
 
 
+        handleInstanceState(savedInstanceState);
+        setupFirebase();
+        setupRecyclerview();
     }
 
     private void prepareMovieData()
@@ -233,5 +238,35 @@ public class HomeFragment extends android.support.v4.app.Fragment
         rvListaDeUsuarios.setHasFixedSize(true);
         rvListaDeUsuarios.setLayoutManager(new LinearLayoutManager(this));
         rvListaDeUsuarios.setAdapter(mFirebaseAdapter);*/
+
+        /*rvListaDeUsuarios.setHasFixedSize(true);
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        childRef = mDatabaseRef.child("Usuarios");*/
+
+    }
+
+    private void setupFirebase() {
+        Firebase.setAndroidContext(getContext());
+       // String firebaseLocation = getResources().getString(R.string.url_database_firebase);
+        mQuery  = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("nome");
+    }
+
+    private void setupRecyclerview() {
+
+        mMyAdapter = new UsuarioAdapterRecycleview(mQuery, Usuario.class, mAdapterItems, mAdapterKeys);
+        //rvListaDeUsuarios.setLayoutManager(new LinearLayoutManager(this));
+        rvListaDeUsuarios.setAdapter(mMyAdapter);
+    }
+
+    private void handleInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null &&
+                savedInstanceState.containsKey(SAVED_ADAPTER_ITEMS) &&
+                savedInstanceState.containsKey(SAVED_ADAPTER_KEYS)) {
+            mAdapterItems = Parcels.unwrap(savedInstanceState.getParcelable(SAVED_ADAPTER_ITEMS));
+            mAdapterKeys = savedInstanceState.getStringArrayList(SAVED_ADAPTER_KEYS);
+        } else {
+            mAdapterItems = new ArrayList<Usuario>();
+            mAdapterKeys = new ArrayList<String>();
+        }
     }
 }
