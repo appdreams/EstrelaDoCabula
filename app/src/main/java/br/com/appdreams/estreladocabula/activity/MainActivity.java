@@ -49,6 +49,8 @@ public class MainActivity extends BaseActivity
         setUpToolbar("Estrela do Cabula");
         setUpNavDrawer();
 
+        registrationBroadcastReceiverFirebaseMenssage();
+
         bindActivity();
         addListenerOnButtonSair();
 

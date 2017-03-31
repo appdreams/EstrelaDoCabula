@@ -13,7 +13,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.com.appdreams.estreladocabula.R;
-import br.com.appdreams.estreladocabula.activity.PrimeiroAcessoActivity;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -21,7 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by Paulo on 30/03/2017.
  */
 
-public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.MyViewHolder>
+public class UsuariosAdapterListView extends RecyclerView.Adapter<UsuariosAdapterListView.MyViewHolder>
 {
 
     private List<Usuario> usuariosList;
@@ -44,7 +43,7 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.MyView
         }
     }
 
-    public UsuariosAdapter(List<Usuario> usuariosList)
+    public UsuariosAdapterListView(List<Usuario> usuariosList)
     {
         this.usuariosList = usuariosList;
     }

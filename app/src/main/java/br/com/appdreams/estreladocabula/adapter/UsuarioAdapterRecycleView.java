@@ -15,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.model.Usuario;
@@ -28,12 +26,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by Matteo on 24/08/2015.
  */
-public class UsuarioAdapterRecycleview extends FirebaseRecyclerAdapter<UsuarioAdapterRecycleview.ViewHolder, Usuario> {
+public class UsuarioAdapterRecycleView extends FirebaseRecyclerAdapter<UsuarioAdapterRecycleView.ViewHolder, Usuario>
+{
 
     private Context mContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
         public TextView txtNome;
         public TextView txtBlocoAp;
         public TextView txtOnline;
@@ -41,7 +40,8 @@ public class UsuarioAdapterRecycleview extends FirebaseRecyclerAdapter<UsuarioAd
         public TextView txtAcesso;
         public CircleImageView imgFoto;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view)
+        {
             super(view);
             txtNome         = (TextView) view.findViewById(R.id.txtNome);
             txtBlocoAp      = (TextView) view.findViewById(R.id.txtBlocoAp);
@@ -52,20 +52,22 @@ public class UsuarioAdapterRecycleview extends FirebaseRecyclerAdapter<UsuarioAd
         }
     }
 
-    public UsuarioAdapterRecycleview(Query query, Class<Usuario> usuarioClass, @Nullable ArrayList<Usuario> items, @Nullable ArrayList<String> keys)
+    public UsuarioAdapterRecycleView(Query query, Class<Usuario> usuarioClass, @Nullable ArrayList<Usuario> items, @Nullable ArrayList<String> keys)
     {
         super(query, items, keys);
     }
 
-    @Override public UsuarioAdapterRecycleview.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_lista_usuarios, parent, false);
+    @Override public UsuarioAdapterRecycleView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_lista_usuarios, parent, false);
 
         return new ViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(UsuarioAdapterRecycleview.ViewHolder holder, int position) {
+    @Override public void onBindViewHolder(UsuarioAdapterRecycleView.ViewHolder holder, int position)
+    {
         Usuario usuario = getItem(position);
+
         holder.txtNome.setText(usuario.getNome());
 
         if((usuario.getBloco() == null)||(usuario.getApartamento() == null))
@@ -97,19 +99,23 @@ public class UsuarioAdapterRecycleview extends FirebaseRecyclerAdapter<UsuarioAd
         holder.txtAcesso.setText(usuario.getAcesso());
     }
 
-    @Override protected void itemAdded(Usuario item, String key, int position) {
+    @Override protected void itemAdded(Usuario item, String key, int position)
+    {
         Log.d("MyAdapter", "Added a new item to the adapter.");
     }
 
-    @Override protected void itemChanged(Usuario oldItem, Usuario newItem, String key, int position) {
+    @Override protected void itemChanged(Usuario oldItem, Usuario newItem, String key, int position)
+    {
         Log.d("MyAdapter", "Changed an item.");
     }
 
-    @Override protected void itemRemoved(Usuario item, String key, int position) {
+    @Override protected void itemRemoved(Usuario item, String key, int position)
+    {
         Log.d("MyAdapter", "Removed an item from the adapter.");
     }
 
-    @Override protected void itemMoved(Usuario item, String key, int oldPosition, int newPosition) {
+    @Override protected void itemMoved(Usuario item, String key, int oldPosition, int newPosition)
+    {
         Log.d("MyAdapter", "Moved an item.");
     }
 }

@@ -1,6 +1,8 @@
 package br.com.appdreams.estreladocabula.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -12,11 +14,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import br.com.appdreams.estreladocabula.R;
@@ -33,6 +39,7 @@ public class BaseActivity extends BaseActivityUtils
     protected DrawerLayout drawerLayout;
     protected static Context context;
     protected NavigationView navigationView;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     //Configura a Toolbar
     protected void setUpToolbar(String titulo)
@@ -134,22 +141,16 @@ public class BaseActivity extends BaseActivityUtils
                 setNavMenuView(navigationView, R.menu.nav_drawer_menu);
                 break;
             case R.id.nav_item_carros_classicos:
-                /*Intent intent = new Intent(getContext(), CarrosActivity.class);
-                intent.putExtra("tipo", R.string.classicos);
-                startActivity(intent);*/
+
                 break;
             case R.id.nav_item_carros_esportivos:
-                /*intent = new Intent(getContext(), CarrosActivity.class);
-                intent.putExtra("tipo", R.string.esportivos);
-                startActivity(intent);*/
+
                 break;
             case R.id.nav_item_carros_luxo:
-                /*intent = new Intent(getContext(), CarrosActivity.class);
-                intent.putExtra("tipo", R.string.luxo);
-                startActivity(intent);*/
+
                 break;
             case R.id.nav_item_site_livro:
-                /*startActivity(new Intent(getContext(), SiteLivroActivity.class));*/
+
                 break;
             case R.id.nav_menu_sair:
 
@@ -196,5 +197,56 @@ public class BaseActivity extends BaseActivityUtils
         {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+    }
+
+    protected void registrationBroadcastReceiverFirebaseMenssage()
+    {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+
+                //Checando por tipo de intent filter
+                if (intent.getAction().equals("registrationComplete"))
+                {
+                    // gcm registrado com sucesso
+                    // Só os inscritos no tópico `global` recebem as informaçãos
+
+                    FirebaseMessaging.getInstance().subscribeToTopic("global");
+
+                    displayFirebaseRegId();
+
+                }
+                else if (intent.getAction().equals("pushNotification"))
+                {
+                    //Nova mensagem push recebida
+
+                    String message = intent.getStringExtra("message");
+
+                    //alert(message);
+                }
+            }
+        };
+
+        displayFirebaseRegId();
+    }
+
+    // Fetches reg id from shared preferences
+    // and displays on the screen
+    private void displayFirebaseRegId()
+    {
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.e("PAULO", "Firebase reg id: " + refreshedToken);
+
+        if (!TextUtils.isEmpty(refreshedToken))
+        {
+            alert("Firebase Reg Id: " + refreshedToken);
+        }
+        else
+        {
+            alert("Firebase Reg Id ainda não foi recebido!");
+        }
+
     }
 }

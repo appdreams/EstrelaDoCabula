@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.appdreams.estreladocabula.R;
-import br.com.appdreams.estreladocabula.adapter.UsuarioAdapterRecycleview;
-import br.com.appdreams.estreladocabula.adapter.UsuariosAdapter;
+import br.com.appdreams.estreladocabula.adapter.UsuarioAdapterRecycleView;
+import br.com.appdreams.estreladocabula.adapter.UsuariosAdapterListView;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.utils.DividerItemDecoration;
 import br.com.appdreams.estreladocabula.utils.RecyclerTouchListener;
@@ -35,27 +35,18 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class HomeFragment extends android.support.v4.app.Fragment
 {
 
-    private List<Usuario> usuariosList = new ArrayList<>();
+
     private RecyclerView rvListaDeUsuarios;
-    //private ListView lvListaDeUsuarios;
-    private UsuariosAdapter mAdapter;
-    private Firebase objetoRef;
-    private Activity view = new Activity();
-
-    //
-    private DatabaseReference mRestaurantReference;
-    private FirebaseRecyclerAdapter mFirebaseAdapter;
-
-    private DatabaseReference mDatabaseRef;
-    private DatabaseReference childRef;
-
     private Query mQuery;
-    private UsuarioAdapterRecycleview mMyAdapter;
+    private UsuarioAdapterRecycleView mMyAdapter;
     private ArrayList<Usuario> mAdapterItems;
     private ArrayList<String> mAdapterKeys;
 
     private final static String SAVED_ADAPTER_ITEMS = "SAVED_ADAPTER_ITEMS";
     private final static String SAVED_ADAPTER_KEYS = "SAVED_ADAPTER_KEYS";
+
+    private UsuariosAdapterListView mAdapter;
+    private List<Usuario> usuariosList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -69,59 +60,19 @@ public class HomeFragment extends android.support.v4.app.Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-        //lvListaDeUsuarios = (ListView) getView().findViewById(R.id.lvListaDeUsuarios);
-        rvListaDeUsuarios = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
-
-        //mAdapter = new UsuariosAdapter(usuariosList);
-
-        rvListaDeUsuarios.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rvListaDeUsuarios.setLayoutManager(mLayoutManager);
-        rvListaDeUsuarios.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        rvListaDeUsuarios.setItemAnimator(new DefaultItemAnimator());
-        //rvListaDeUsuarios.setAdapter(mAdapter);
-
-        rvListaDeUsuarios.addOnItemTouchListener(
-                new RecyclerTouchListener(getActivity(), rvListaDeUsuarios,
-                        new RecyclerTouchListener.OnTouchActionListener()
-                        {
-                            @Override
-                            public void onClick(View view, int position)
-                            {
-                                Usuario usuario = mAdapterItems.get(position);
-                                Toast.makeText(getApplicationContext(), usuario.getNome(), Toast.LENGTH_SHORT).show();
-                            }
-                            @Override
-                            public void onLongClick(View view, int position)
-                            {
-                                Usuario usuario = usuariosList.get(position);
-                                Toast.makeText(getApplicationContext(), usuario.getNome(), Toast.LENGTH_SHORT).show();
-                            }
-                            @Override
-                            public void onRightSwipe(View view, int position)
-                            {
-                                Toast.makeText(getContext(), "onRightSwipe",Toast.LENGTH_SHORT).show();
-                            }
-                            @Override
-                            public void onLeftSwipe(View view, int position)
-                            {
-                                Toast.makeText(getContext(), "onLeftSwipe",Toast.LENGTH_SHORT).show();
-                            }
-                        }));
-
-        //prepareMovieData();
-
-        //FIREBASE
-        //carregaDados();
-        //FIREBASE
-
-
+        bindActivity();
         handleInstanceState(savedInstanceState);
         setupFirebase();
         setupRecyclerview();
     }
 
-    private void prepareMovieData()
+    /* Bind Objetos*/
+    private void bindActivity()
+    {
+        rvListaDeUsuarios = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
+    }
+
+    private void cargaDadosTeste()
     {
         Usuario usuario = new Usuario("01", "Paulo Vinicius Senna Figueiredo", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "29/03/2017 10:54:39", "S", "","D","203", "");
         usuariosList.add(usuario);
@@ -156,115 +107,62 @@ public class HomeFragment extends android.support.v4.app.Fragment
         mAdapter.notifyDataSetChanged();
     }
 
-    private void carregaDados()
+    private void setupFirebase()
     {
-
-        /*Firebase.setAndroidContext(getContext());
-
-        Firebase objetoRef = new Firebase("https://estrela-do-cabula.firebaseio.com/");
-        Firebase novaRef = objetoRef.child("Usuarios");
-
-        final Firebase ref = new Firebase("https://test.firebaseio.com/users");
-        Query query = ref.orderByChild("username").equalTo("toto");
-
-        FirebaseListAdapter<String> adaptador = new FirebaseListAdapter<String>(getActivity(), String.class, android.R.layout.simple_list_item_1, objetoRef) {
-            @Override
-            protected void populateView(View v, String model, int position) {
-
-            }
-        };
-
-        Firebase mRef = new Firebase("https://estrela-do-cabula.firebaseio.com/Usuarios");
-        ListAdapter adapter = new FirebaseListAdapter<Usuario>(this, Usuario.class, android.R.layout.two_line_list_item, mRef)
-        {
-            protected void populateView(View view, Usuario usuario)
-            {
-                ((TextView)view.findViewById(android.R.id.text1)).setText(chatMessage.getName());
-                ((TextView)view.findViewById(android.R.id.text2)).setText(chatMessage.getMessage());
-            }
-        };
-        rvListaDeUsuarios.setAdapter(adapter);
-
-        // Connect to the Firebase database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        // Get a reference to the todoItems child items it the database
-        final DatabaseReference myRef = database.getReference("todoItems");
-
-        Query myQuery = myRef.orderByValue().equalTo("");
-
-        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()) {
-                    DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
-                    firstChild.getRef().removeValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });*/
-
-
-
-
-
-        /*Firebase rootRef = new Firebase("https://estrela-do-cabula.firebaseio.com/");
-        //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        Firebase novaRef = rootRef.child("Usuarios");
-
-
-        FirebaseListAdapter<String> adaptador = new FirebaseListAdapter<String>(getActivity(), String.class, R.layout.row_lista_usuarios, novaRef) {
-            @Override
-            protected void populateView(View v, String model, int position) {
-
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                textView.setText(model);
-            }
-        };
-        lvListaDeUsuarios.setAdapter(adaptador);*/
-
-        /*mFirebaseAdapter = new FirebaseRecyclerAdapter<Usuario, UsuariosAdapter>(Usuario.class, R.layout.row_lista_usuarios, UsuariosAdapter.class,
-                        mRestaurantReference) {
-
-            @Override
-            protected void populateViewHolder(UsuariosAdapter viewHolder, Usuario model, int position)
-            {
-                viewHolder.bindViewHolder(model);
-            }
-        };
-        rvListaDeUsuarios.setHasFixedSize(true);
-        rvListaDeUsuarios.setLayoutManager(new LinearLayoutManager(this));
-        rvListaDeUsuarios.setAdapter(mFirebaseAdapter);*/
-
-        /*rvListaDeUsuarios.setHasFixedSize(true);
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        childRef = mDatabaseRef.child("Usuarios");*/
-
-    }
-
-    private void setupFirebase() {
         Firebase.setAndroidContext(getContext());
-       // String firebaseLocation = getResources().getString(R.string.url_database_firebase);
         mQuery  = FirebaseDatabase.getInstance().getReference("Usuarios").orderByChild("nome");
     }
 
-    private void setupRecyclerview() {
+    private void setupRecyclerview()
+    {
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
-        mMyAdapter = new UsuarioAdapterRecycleview(mQuery, Usuario.class, mAdapterItems, mAdapterKeys);
-        //rvListaDeUsuarios.setLayoutManager(new LinearLayoutManager(this));
+        rvListaDeUsuarios.setHasFixedSize(true);
+        rvListaDeUsuarios.setLayoutManager(mLayoutManager);
+        rvListaDeUsuarios.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+        rvListaDeUsuarios.setItemAnimator(new DefaultItemAnimator());
+
+        mMyAdapter = new UsuarioAdapterRecycleView(mQuery, Usuario.class, mAdapterItems, mAdapterKeys);
         rvListaDeUsuarios.setAdapter(mMyAdapter);
+
+        rvListaDeUsuarios.addOnItemTouchListener(
+                new RecyclerTouchListener(getActivity(), rvListaDeUsuarios,
+                        new RecyclerTouchListener.OnTouchActionListener()
+                        {
+                            @Override
+                            public void onClick(View view, int position)
+                            {
+                                Usuario usuario = mAdapterItems.get(position);
+                                Toast.makeText(getApplicationContext(), usuario.getNome(), Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onLongClick(View view, int position)
+                            {
+                                Usuario usuario = mAdapterItems.get(position);
+                                Toast.makeText(getApplicationContext(), usuario.getNome(), Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onRightSwipe(View view, int position)
+                            {
+                                Toast.makeText(getContext(), "onRightSwipe",Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onLeftSwipe(View view, int position)
+                            {
+                                Toast.makeText(getContext(), "onLeftSwipe",Toast.LENGTH_SHORT).show();
+                            }
+                        }));
     }
 
-    private void handleInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null &&
-                savedInstanceState.containsKey(SAVED_ADAPTER_ITEMS) &&
-                savedInstanceState.containsKey(SAVED_ADAPTER_KEYS)) {
+    private void handleInstanceState(Bundle savedInstanceState)
+    {
+        if ((savedInstanceState != null) && (savedInstanceState.containsKey(SAVED_ADAPTER_ITEMS)) && (savedInstanceState.containsKey(SAVED_ADAPTER_KEYS)))
+        {
             mAdapterItems = Parcels.unwrap(savedInstanceState.getParcelable(SAVED_ADAPTER_ITEMS));
             mAdapterKeys = savedInstanceState.getStringArrayList(SAVED_ADAPTER_KEYS);
-        } else {
+        }
+        else
+        {
             mAdapterItems = new ArrayList<Usuario>();
             mAdapterKeys = new ArrayList<String>();
         }
