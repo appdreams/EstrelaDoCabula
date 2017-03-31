@@ -28,7 +28,8 @@
     <color name="black">#000000</color>
     <color name="blue">#00f</color>
     <color name="red">#f00</color>
-    <color name="green">#00ff00</color>
+    <color name="green1">#00ff00</color>
+    <color name="green2">#308930</color>
     <color name="yellow">#fff000</color>
     <color name="gray">#cccccc</color>
 

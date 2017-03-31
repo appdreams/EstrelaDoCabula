@@ -1,18 +1,22 @@
 package br.com.appdreams.estreladocabula.fragments;
 
+import android.app.Activity;
 import android.graphics.Movie;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.annotations.Nullable;
-import com.firebase.ui.database.FirebaseListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +30,30 @@ import br.com.appdreams.estreladocabula.utils.RecyclerTouchListener;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
+import com.firebase.ui.FirebaseListAdapter;
+import com.firebase.ui.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 
 public class HomeFragment extends android.support.v4.app.Fragment
 {
 
     private List<Usuario> usuariosList = new ArrayList<>();
     private RecyclerView rvListaDeUsuarios;
+    //private ListView lvListaDeUsuarios;
     private UsuariosAdapter mAdapter;
     private Firebase objetoRef;
+    private Activity view = new Activity();
+
+    //
+    private DatabaseReference mRestaurantReference;
+    private FirebaseRecyclerAdapter mFirebaseAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -47,6 +67,7 @@ public class HomeFragment extends android.support.v4.app.Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
+        //lvListaDeUsuarios = (ListView) getView().findViewById(R.id.lvListaDeUsuarios);
         rvListaDeUsuarios = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
 
         mAdapter = new UsuariosAdapter(usuariosList);
@@ -133,16 +154,84 @@ public class HomeFragment extends android.support.v4.app.Fragment
     private void carregaDados()
     {
 
-        Firebase.setAndroidContext(getContext());
+        /*Firebase.setAndroidContext(getContext());
 
-        objetoRef = new Firebase("https://estrela-do-cabula.firebaseio.com/");
+        Firebase objetoRef = new Firebase("https://estrela-do-cabula.firebaseio.com/");
         Firebase novaRef = objetoRef.child("Usuarios");
 
-        FirebaseListAdapter<String> adaptador = new FirebaseListAdapter<String>(getActivity(), String.class, android.R.layout.simple_list_item_1, novaRef) {
+        final Firebase ref = new Firebase("https://test.firebaseio.com/users");
+        Query query = ref.orderByChild("username").equalTo("toto");
+
+        FirebaseListAdapter<String> adaptador = new FirebaseListAdapter<String>(getActivity(), String.class, android.R.layout.simple_list_item_1, objetoRef) {
             @Override
             protected void populateView(View v, String model, int position) {
 
             }
         };
+
+        Firebase mRef = new Firebase("https://estrela-do-cabula.firebaseio.com/Usuarios");
+        ListAdapter adapter = new FirebaseListAdapter<Usuario>(this, Usuario.class, android.R.layout.two_line_list_item, mRef)
+        {
+            protected void populateView(View view, Usuario usuario)
+            {
+                ((TextView)view.findViewById(android.R.id.text1)).setText(chatMessage.getName());
+                ((TextView)view.findViewById(android.R.id.text2)).setText(chatMessage.getMessage());
+            }
+        };
+        rvListaDeUsuarios.setAdapter(adapter);
+
+        // Connect to the Firebase database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        // Get a reference to the todoItems child items it the database
+        final DatabaseReference myRef = database.getReference("todoItems");
+
+        Query myQuery = myRef.orderByValue().equalTo("");
+
+        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    DataSnapshot firstChild = dataSnapshot.getChildren().iterator().next();
+                    firstChild.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });*/
+
+
+
+
+
+        /*Firebase rootRef = new Firebase("https://estrela-do-cabula.firebaseio.com/");
+        //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Firebase novaRef = rootRef.child("Usuarios");
+
+
+        FirebaseListAdapter<String> adaptador = new FirebaseListAdapter<String>(getActivity(), String.class, R.layout.row_lista_usuarios, novaRef) {
+            @Override
+            protected void populateView(View v, String model, int position) {
+
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setText(model);
+            }
+        };
+        lvListaDeUsuarios.setAdapter(adaptador);*/
+
+        /*mFirebaseAdapter = new FirebaseRecyclerAdapter<Usuario, UsuariosAdapter>(Usuario.class, R.layout.row_lista_usuarios, UsuariosAdapter.class,
+                        mRestaurantReference) {
+
+            @Override
+            protected void populateViewHolder(UsuariosAdapter viewHolder, Usuario model, int position)
+            {
+                viewHolder.bindViewHolder(model);
+            }
+        };
+        rvListaDeUsuarios.setHasFixedSize(true);
+        rvListaDeUsuarios.setLayoutManager(new LinearLayoutManager(this));
+        rvListaDeUsuarios.setAdapter(mFirebaseAdapter);*/
     }
 }
