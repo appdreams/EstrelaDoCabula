@@ -101,6 +101,7 @@ public class Notification
 
         inboxStyle.addLine(message);
 
+
         android.app.Notification notification;
         notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
                 .setAutoCancel(true)

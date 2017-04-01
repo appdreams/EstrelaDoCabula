@@ -201,7 +201,9 @@ public class BaseActivity extends BaseActivityUtils
 
     protected void registrationBroadcastReceiverFirebaseMenssage()
     {
-        mRegistrationBroadcastReceiver = new BroadcastReceiver()
+        String token = FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        /*mRegistrationBroadcastReceiver = new BroadcastReceiver()
         {
             @Override
             public void onReceive(Context context, Intent intent)
@@ -229,7 +231,7 @@ public class BaseActivity extends BaseActivityUtils
             }
         };
 
-        displayFirebaseRegId();
+        displayFirebaseRegId();*/
     }
 
     // Fetches reg id from shared preferences
