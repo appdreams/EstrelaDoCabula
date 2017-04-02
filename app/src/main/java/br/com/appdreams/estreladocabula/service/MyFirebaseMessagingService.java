@@ -25,7 +25,7 @@ import br.com.appdreams.estreladocabula.activity.MainActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "PUSH";
 
     /**
      * Called when message is received.

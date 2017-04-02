@@ -13,7 +13,7 @@ public class FireIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String tkn = FirebaseInstanceId.getInstance().getToken();
-        Log.d("Not","Token ["+tkn+"]");
+        Log.d("PUSH","Token ["+tkn+"]");
 
     }
 }
