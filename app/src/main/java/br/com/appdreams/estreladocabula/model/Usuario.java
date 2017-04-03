@@ -19,28 +19,30 @@ public class Usuario
     public  String origem;
     public String bloco;
     public String apartamento;
-    public  String status;
+    public String status;
+    public String token;
 
     public Usuario()
     {
         // Default constructor required for calls to DataSnapshot.getValue(Usuario.class)
     }
 
-    public Usuario(String id, String nome, String email, String senha, String tipo, String foto, String acesso, String online, String origem, String bloco, String apartamento, String status)
+    public Usuario(String id, String nome, String email, String senha, String tipo, String foto, String acesso, String online, String origem, String bloco, String apartamento, String token, String status)
     {
 
-        this.id     = id;
-        this.nome   = nome;
-        this.email  = email;
-        this.senha  = senha;
-        this.tipo   = tipo;
-        this.foto   = foto;
-        this.acesso = acesso;
-        this.online = online;
-        this.origem = origem;
-        this.bloco = bloco;
-        this.apartamento = apartamento;
-        this.status = status;
+        this.id             = id;
+        this.nome           = nome;
+        this.email          = email;
+        this.senha          = senha;
+        this.tipo           = tipo;
+        this.foto           = foto;
+        this.acesso         = acesso;
+        this.online         = online;
+        this.origem         = origem;
+        this.bloco          = bloco;
+        this.apartamento    = apartamento;
+        this.status         = status;
+        this.setToken(token);
     }/**/
 
     public String getID()
@@ -237,6 +239,23 @@ public class Usuario
         else
         {
             this.apartamento = apartamento;
+        }
+    }
+
+    public String getToken()
+    {
+        return token;
+    }
+
+    public void setToken(String token)
+    {
+        if(token == "")
+        {
+            this.token = "";
+        }
+        else
+        {
+            this.token = token;
         }
     }
 }

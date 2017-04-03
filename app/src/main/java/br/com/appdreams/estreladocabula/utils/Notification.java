@@ -17,6 +17,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.appdreams.estreladocabula.R;
+import br.com.appdreams.estreladocabula.activity.MainActivity;
 
 /**
  * Created by Ravi on 31/03/15.
@@ -67,6 +69,8 @@ public class Notification
 
         final PendingIntent resultPendingIntent = PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
+        final long[] vibrate = new long[] { 1000, 1000, 1000, 1000, 1000 };
+
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
 
         final Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + mContext.getPackageName() + "/raw/notification");
@@ -83,19 +87,19 @@ public class Notification
                 }
                 else
                 {
-                    showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
+                    showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound, vibrate);
                 }
             }
         }
         else
         {
-            showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound);
+            showSmallNotification(mBuilder, icon, title, message, timeStamp, resultPendingIntent, alarmSound, vibrate);
             playNotificationSound();
         }
     }
 
 
-    private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound)
+    private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound, long[] vibrate)
     {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
@@ -107,7 +111,8 @@ public class Notification
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setVibrate(vibrate)
                 .setStyle(inboxStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.ic_star_24)
@@ -117,6 +122,7 @@ public class Notification
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(100, notification);
+
     }
 
     private void showBigNotification(Bitmap bitmap, NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound)
@@ -130,7 +136,7 @@ public class Notification
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setStyle(bigPictureStyle)
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.ic_star_24)

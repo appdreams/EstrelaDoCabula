@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -22,9 +23,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private boolean mShowLastDivider = false;
 
 
-    public DividerItemDecoration(Context context, AttributeSet attrs) {
-        final TypedArray a = context
-                .obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
+    public DividerItemDecoration(Context context, AttributeSet attrs)
+    {
+        final TypedArray a = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         a.recycle();
     }
@@ -102,7 +103,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                 left = child.getLeft() - params.leftMargin;
                 right = left + size;
             }
-            mDivider.setBounds(left, top, right, bottom);
+            mDivider.setBounds(274, top, 1400, bottom);
+            //mDivider.setBounds(left, top, right, bottom);
+            Log.i("PAULO",Integer.toString(right));
             mDivider.draw(c);
         }
 

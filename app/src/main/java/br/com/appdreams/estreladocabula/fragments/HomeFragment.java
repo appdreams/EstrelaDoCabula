@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -27,6 +28,7 @@ import br.com.appdreams.estreladocabula.adapter.UsuarioAdapterRecycleView;
 import br.com.appdreams.estreladocabula.adapter.UsuariosAdapterListView;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.utils.DividerItemDecoration;
+import br.com.appdreams.estreladocabula.utils.FCMNotification;
 import br.com.appdreams.estreladocabula.utils.RecyclerTouchListener;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -37,6 +39,7 @@ public class HomeFragment extends android.support.v4.app.Fragment
 
 
     private RecyclerView rvListaDeUsuarios;
+    private ProgressBar pbCarregando;
     private Query mQuery;
     private UsuarioAdapterRecycleView mMyAdapter;
     private ArrayList<Usuario> mAdapterItems;
@@ -61,6 +64,7 @@ public class HomeFragment extends android.support.v4.app.Fragment
         super.onActivityCreated(savedInstanceState);
 
         bindActivity();
+        showLoading();
         handleInstanceState(savedInstanceState);
         setupFirebase();
         setupRecyclerview();
@@ -69,39 +73,40 @@ public class HomeFragment extends android.support.v4.app.Fragment
     /* Bind Objetos*/
     private void bindActivity()
     {
-        rvListaDeUsuarios = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
+        pbCarregando        = (ProgressBar) getView().findViewById(R.id.pbCarregando);
+        rvListaDeUsuarios   = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
     }
 
     private void cargaDadosTeste()
     {
-        Usuario usuario = new Usuario("01", "Paulo Vinicius Senna Figueiredo", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "29/03/2017 10:54:39", "S", "","D","203", "");
+        Usuario usuario = new Usuario("01", "Paulo Vinicius Senna Figueiredo", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "29/03/2017 10:54:39", "S", "","D","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("02", "Abenilde Pires dos Santos", "abenilde@bol.com.br", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "15/03/2017 00:25:12", "S", "","A","203", "");
+        usuario = new Usuario("02", "Abenilde Pires dos Santos", "abenilde@bol.com.br", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "15/03/2017 00:25:12", "S", "","A","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("03", "Bernardina Fernandes Vaz", "bernardina@uol.com.br", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "30/03/2017 04:36:17", "S", "","B","203", "");
+        usuario = new Usuario("03", "Bernardina Fernandes Vaz", "bernardina@uol.com.br", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "30/03/2017 04:36:17", "S", "","B","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("04", "Cecília Castelo Viegas", "celia.castelo@yahoo.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "30/03/2017 12:57:13", "N", "","D","203", "");
+        usuario = new Usuario("04", "Cecília Castelo Viegas", "celia.castelo@yahoo.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "30/03/2017 12:57:13", "N", "","D","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("05", "Danilsa Cunha de Almeida", "danilsa@bol.com.br", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "29/03/2017 17:02:28", "S", "","E","203", "");
+        usuario = new Usuario("05", "Danilsa Cunha de Almeida", "danilsa@bol.com.br", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "29/03/2017 17:02:28", "S", "","E","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("06", "Elga dos Santos de Sousa", "elga@gmail.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "28/03/2017 21:51:59", "S", "","F","203", "");
+        usuario = new Usuario("06", "Elga dos Santos de Sousa", "elga@gmail.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "28/03/2017 21:51:59", "S", "","F","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("07", "Feliciano Martins Pinheiro", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "28/03/2017 21:51:13", "N", "","D","203", "");
+        usuario = new Usuario("07", "Feliciano Martins Pinheiro", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "28/03/2017 21:51:13", "N", "","D","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("08", "Genisvaldo do Nascimento", "genisvaldo@gmail.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "29/03/2017 17:01:25", "N", "","A","203", "");
+        usuario = new Usuario("08", "Genisvaldo do Nascimento", "genisvaldo@gmail.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "29/03/2017 17:01:25", "N", "","A","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("09", "Honesto Lima Baguide", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "28/03/2017 22:32:55", "S", "","B","203", "");
+        usuario = new Usuario("09", "Honesto Lima Baguide", "pvincius@gmail.com", "", "", "https://s-media-cache-ak0.pinimg.com/originals/72/26/ed/7226edc1b5b9b0de0af1f19ec6032c3a.jpg", "28/03/2017 22:32:55", "S", "","B","","203", "");
         usuariosList.add(usuario);
 
-        usuario = new Usuario("10", "Joaquim Ramos Pinto", "joaquim@gmail.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "29/03/2017 10:55:03", "S", "","D","203", "");
+        usuario = new Usuario("10", "Joaquim Ramos Pinto", "joaquim@gmail.com", "", "", "http://www.dicasenovidades.com.br/wp-content/gallery/angelina-jolie-2014/angelina-jolie-29.jpg", "29/03/2017 10:55:03", "S", "","D","","203", "");
         usuariosList.add(usuario);
 
         mAdapter.notifyDataSetChanged();
@@ -133,7 +138,14 @@ public class HomeFragment extends android.support.v4.app.Fragment
                             public void onClick(View view, int position)
                             {
                                 Usuario usuario = mAdapterItems.get(position);
-                                Toast.makeText(getApplicationContext(), usuario.getNome(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), usuario.getToken(), Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    FCMNotification.pushFCMNotification(usuario.getToken());
+                                } catch (Exception e) {
+                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                             @Override
                             public void onLongClick(View view, int position)
@@ -152,6 +164,8 @@ public class HomeFragment extends android.support.v4.app.Fragment
                                 Toast.makeText(getContext(), "onLeftSwipe",Toast.LENGTH_SHORT).show();
                             }
                         }));
+
+        hideLoading();
     }
 
     private void handleInstanceState(Bundle savedInstanceState)
@@ -166,5 +180,15 @@ public class HomeFragment extends android.support.v4.app.Fragment
             mAdapterItems = new ArrayList<Usuario>();
             mAdapterKeys = new ArrayList<String>();
         }
+    }
+
+    private void showLoading()
+    {
+        pbCarregando.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoading()
+    {
+        pbCarregando.setVisibility(View.GONE);
     }
 }

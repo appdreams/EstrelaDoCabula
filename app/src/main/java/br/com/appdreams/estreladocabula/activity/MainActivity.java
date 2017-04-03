@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity
         setUpToolbar("Estrela do Cabula");
         setUpNavDrawer();
 
-        registrationBroadcastReceiverFirebaseMenssage();
+        //registrationBroadcastReceiverFirebaseMenssage();
 
         bindActivity();
         addListenerOnButtonSair();
@@ -208,13 +208,13 @@ public class MainActivity extends BaseActivity
     {
         switch (tipo)
         {
-            case "S":
+            case "Sindico":
                 setNavMenuView(navigationView, R.menu.menu_sindico);
                 break;
-            case "M":
+            case "Morador":
                 setNavMenuView(navigationView, R.menu.menu_morador);
                 break;
-            case "P":
+            case "Porteiro":
                 setNavMenuView(navigationView, R.menu.menu_porteiro);
                 break;
         }

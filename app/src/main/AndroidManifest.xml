@@ -3,6 +3,7 @@
     package="br.com.appdreams.estreladocabula">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +20,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" android:theme="@style/AppTheme.NoActionBar.NavDrawer"/>
-        <activity android:name=".activity.PrimeiroAcessoActivity" />
+        <activity android:name=".activity.PrimeiroAcessoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.appdreams.estreladocabula.activity.LoginActivity">
+            </meta-data>
+        </activity>
         <activity android:name=".activity.RecuperarSenhaActivity"></activity>
 
         <!-- Firebase Notifications -->

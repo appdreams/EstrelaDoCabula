@@ -21,6 +21,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
@@ -41,6 +46,12 @@ public class BaseActivity extends BaseActivityUtils
     protected NavigationView navigationView;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
 
+    //Firebase
+    private Firebase mFirebase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseDatabase mFirebaseDatabase;
+    //Firebase
+
     //Configura a Toolbar
     protected void setUpToolbar(String titulo)
     {
@@ -57,6 +68,7 @@ public class BaseActivity extends BaseActivityUtils
     {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
         if (upArrow != null)
@@ -168,6 +180,7 @@ public class BaseActivity extends BaseActivityUtils
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        //alert(item.getTitle().toString());
         switch (item.getItemId())
         {
             case android.R.id.home:
@@ -177,6 +190,7 @@ public class BaseActivity extends BaseActivityUtils
                     openDrawer();
                     return true;
                 }
+            break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -197,6 +211,14 @@ public class BaseActivity extends BaseActivityUtils
         {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+    }
+
+    /* Get Usuário Logado*/
+    private FirebaseUser getUsuarioLogado()
+    {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser usuarioLogado   =   mFirebaseAuth.getCurrentUser();
+        return usuarioLogado;
     }
 
     protected void registrationBroadcastReceiverFirebaseMenssage()
@@ -232,6 +254,8 @@ public class BaseActivity extends BaseActivityUtils
         };
 
         displayFirebaseRegId();*/
+
+
     }
 
     // Fetches reg id from shared preferences
@@ -251,4 +275,6 @@ public class BaseActivity extends BaseActivityUtils
         }
 
     }
+
+
 }

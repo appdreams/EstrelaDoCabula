@@ -435,7 +435,7 @@ public class PrimeiroAcessoActivity extends BaseActivity
         usuario.setEmail(email);
         usuario.setSenha(senha);
         usuario.setFoto(internetUrl);
-        usuario.setTipo("M");
+        usuario.setTipo("Morador");
         usuario.setAcesso(getDataHora());
         usuario.setOrigem("LOGIN");
         usuario.setOnline("S");

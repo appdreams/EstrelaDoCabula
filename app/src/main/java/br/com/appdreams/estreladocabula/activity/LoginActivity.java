@@ -13,6 +13,7 @@ import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +61,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 import java.security.MessageDigest;
@@ -119,8 +121,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
 
         bindActivity();
 
-        firebaseAuth();
         firebaseDatabase();
+        firebaseAuth();
 
         addListenerOnButtonLogin();
         addListenerOnButtonGoogle();
@@ -177,6 +179,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         {
             if(Validacoes.haveNetworkConnection(getContext(), rootView))
             {
+                salvaFirebaseRegIdToken();
                 Toast.makeText(LoginActivity.this, "Usuário já logado no sistema!",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
@@ -372,6 +375,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         DatabaseReference tbUsuarios = mFirebaseDatabase.getReference("Usuarios");
         tbUsuarios.child(getUsuarioLogado().getUid()).child("acesso").setValue(getDataHora());
         tbUsuarios.child(getUsuarioLogado().getUid()).child("online").setValue("S");
+
+        salvaFirebaseRegIdToken();
     }
 
     /* Get Data Hora Atual*/
@@ -538,7 +543,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
         usuario.setEmail(email);
         usuario.setSenha("");
         usuario.setFoto(foto);
-        usuario.setTipo("M");
+        usuario.setTipo("Morador");
         usuario.setAcesso(getDataHora());
         usuario.setOnline("S");
         usuario.setOrigem(origem);
@@ -621,5 +626,21 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                 alert(databaseError.getMessage().toString());
             }
         });
+    }
+
+    public void salvaFirebaseRegIdToken()
+    {
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.e("PAULO", "Firebase reg id: " + refreshedToken);
+
+        if (!TextUtils.isEmpty(refreshedToken))
+        {
+            DatabaseReference tbUsuarios = mFirebaseDatabase.getReference("Usuarios");
+            tbUsuarios.child(getUsuarioLogado().getUid()).child("token").setValue(refreshedToken);
+        }
+        else
+        {
+            //alert("Firebase Reg Id ainda não foi recebido!");
+        }
     }
 }
