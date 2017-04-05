@@ -105,7 +105,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             }
             mDivider.setBounds(274, top, 1400, bottom);
             //mDivider.setBounds(left, top, right, bottom);
-            Log.i("PAULO",Integer.toString(right));
+            //Log.i("PAULO",Integer.toString(right));
             mDivider.draw(c);
         }
 

@@ -1,5 +1,7 @@
 package br.com.appdreams.estreladocabula.utils;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -25,7 +27,9 @@ public class FCMNotification {
 
         URL url = new URL(FMCurl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
+        Log.i("PAULO",authKey);
+        Log.i("PAULO",FMCurl);
+        Log.i("PAULO",DeviceIdKey);
         conn.setUseCaches(false);
         conn.setDoInput(true);
         conn.setDoOutput(true);
@@ -35,11 +39,24 @@ public class FCMNotification {
         conn.setRequestProperty("Content-Type", "application/json");
 
         JSONObject data = new JSONObject();
-        data.put("to", DeviceIdKey.trim());
+        //data.put("to", DeviceIdKey.trim());
         JSONObject info = new JSONObject();
-        info.put("title", "FCM Notificatoin Title"); // Notification title
-        info.put("body", "Hello First Test notification"); // Notification body
-        data.put("data", info);
+        //info.put("title", "FCM Notificatoin Title"); // Notification title
+        //info.put("body", "Hello First Test notification"); // Notification body
+        //data.put("notification", info);/**/
+
+        Log.i("PAULO",data.toString());
+
+
+        JSONObject jsonObj = new JSONObject("{\n" +
+                "    \"to\":\"evHyC_fusco:APA91bGhhcD-4xwAH4YQkBqKVQ4Gznzbq1sByjLpXa_7hjozkpUyt3t29h54zPic5hUR-u-fMNNS_qlU-WbXcZkmQ9jWmdQk3ylR6mFUrN3TrRLNueGyRwXZlTLK48kSesSzrY6fKVDS\",\n" +
+                "    \"notification\":\n" +
+                "    {\n" +
+                "        \"title\":\"FCM Notificatoin Title\",\n" +
+                "        \"body\":\"Hello First Test notification\"\n" +
+                "    }\n" +
+                "}\n");
+        data.put("data", jsonObj);
 
         OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
         wr.write(data.toString());
@@ -47,7 +64,7 @@ public class FCMNotification {
         wr.close();
 
         int responseCode = conn.getResponseCode();
-        System.out.println("Response Code : " + responseCode);
+        Log.i("PAULO","Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         String inputLine;
@@ -62,7 +79,7 @@ public class FCMNotification {
 
     @SuppressWarnings("static-access")
     public static void main(String[] args) throws Exception {
-        FCMNotification obj = new FCMNotification();
-        obj.pushFCMNotification("USER_DEVICE_TOKEN");
-    }
+        //FCMNotification obj = new FCMNotification();
+        //obj.pushFCMNotification("evHyC_fusco:APA91bGhhcD-4xwAH4YQkBqKVQ4Gznzbq1sByjLpXa_7hjozkpUyt3t29h54zPic5hUR-u-fMNNS_qlU-WbXcZkmQ9jWmdQk3ylR6mFUrN3TrRLNueGyRwXZlTLK48kSesSzrY6fKVDS");
+    }/**/
 }
