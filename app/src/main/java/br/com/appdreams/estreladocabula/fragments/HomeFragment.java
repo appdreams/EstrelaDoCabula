@@ -43,6 +43,7 @@ import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.adapter.UsuarioAdapterRecycleView;
 import br.com.appdreams.estreladocabula.adapter.UsuariosAdapterListView;
 import br.com.appdreams.estreladocabula.model.Usuario;
+import br.com.appdreams.estreladocabula.utils.AsyncConnection;
 import br.com.appdreams.estreladocabula.utils.DividerItemDecoration;
 import br.com.appdreams.estreladocabula.utils.FCMNotification;
 import br.com.appdreams.estreladocabula.utils.PushNotifictionHelper;
@@ -164,7 +165,8 @@ public class HomeFragment extends android.support.v4.app.Fragment
 
                                 try {
 
-                                    PushNotifictionHelper.sendPushNotification(usuario.getToken());
+                                    new AsyncConnection().execute(usuario.getToken());
+                                    //PushNotifictionHelper.sendPushNotification(usuario.getToken());
                                     //SendNotifi.pushFCMNotification(usuario.getToken());
                                     //FCMNotification.pushFCMNotification(usuario.getToken());
                                 } catch (Exception e) {
