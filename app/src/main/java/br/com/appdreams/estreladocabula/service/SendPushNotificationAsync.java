@@ -1,4 +1,4 @@
-package br.com.appdreams.estreladocabula.utils;
+package br.com.appdreams.estreladocabula.service;
 
 import android.os.AsyncTask;
 
@@ -13,10 +13,10 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 /**
- * Created by Paulo on 06/04/2017.
+ * Created by Paulo on 06/04/17.
  */
 
-public class AsyncConnection extends AsyncTask<String, Void, Void>
+public class SendPushNotificationAsync extends AsyncTask<String, Void, Void>
 {
     @Override
     protected Void doInBackground(String... strings)
@@ -24,6 +24,7 @@ public class AsyncConnection extends AsyncTask<String, Void, Void>
 
         final String userDeviceIdKey = strings[0];
         URL url = null;
+
         try
         {
             url = new URL("https://fcm.googleapis.com/fcm/send");
@@ -50,16 +51,20 @@ public class AsyncConnection extends AsyncTask<String, Void, Void>
             wr.flush();
             conn.getInputStream();
 
-        } catch (MalformedURLException e)
+        }
+        catch (MalformedURLException e)
         {
             e.printStackTrace();
-        } catch (ProtocolException e)
+        }
+        catch (ProtocolException e)
         {
             e.printStackTrace();
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
-        } catch (JSONException e)
+        }
+        catch (JSONException e)
         {
             e.printStackTrace();
         }

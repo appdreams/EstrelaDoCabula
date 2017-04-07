@@ -10,7 +10,8 @@ import android.view.View;
 
 import br.com.appdreams.estreladocabula.activity.MainActivity;
 
-public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
+{
 
     private static final String TAG = "RecyclerTouchListener";
 
@@ -21,7 +22,8 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     private OnTouchActionListener mOnTouchActionListener;
     private GestureDetectorCompat mGestureDetector;
 
-    public static interface OnTouchActionListener {
+    public static interface OnTouchActionListener
+    {
         public void onLeftSwipe(View view, int position);
         public void onRightSwipe(View view, int position);
         public void onClick(View view, int position);
@@ -32,10 +34,12 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     {
 
         mOnTouchActionListener = onTouchActionListener;
-        mGestureDetector = new GestureDetectorCompat(context,new GestureDetector.SimpleOnGestureListener(){
+        mGestureDetector = new GestureDetectorCompat(context,new GestureDetector.SimpleOnGestureListener()
+        {
 
             @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
+            public boolean onSingleTapConfirmed(MotionEvent e)
+            {
                 Log.d(TAG, "On Single Tap Confirmed");
                 // Find the item view that was swiped based on the coordinates
                 View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
@@ -45,12 +49,14 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
             }
 
             @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2,
-                                   float velocityX, float velocityY) {
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+            {
                 Log.d(TAG, "onFling: " + e1.toString() + e2.toString());
 
-                try {
-                    if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+                try
+                {
+                    if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                    {
                         return false;
                     }
 
@@ -59,20 +65,26 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
                     int childPosition = recyclerView.getChildPosition(child);
 
                     // right to left swipe
-                    if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+                    {
 
                         Log.d(TAG, "Left Swipe");
-                        if (mOnTouchActionListener != null && child != null) {
+                        if (mOnTouchActionListener != null && child != null)
+                        {
                             mOnTouchActionListener.onLeftSwipe(child, childPosition);
                         }
 
-                    } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    }
+                    else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
                         Log.d(TAG, "Right Swipe");
-                        if (mOnTouchActionListener != null && child != null) {
+                        if (mOnTouchActionListener != null && child != null)
+                        {
                             mOnTouchActionListener.onRightSwipe(child, childPosition);
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     // nothing
                 }
 
@@ -92,17 +104,18 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e)
+    {
         mGestureDetector.onTouchEvent(e);
         return false;
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-    }
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {}
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept)
+    {
         // do nothing
     }
 

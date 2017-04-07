@@ -1,6 +1,5 @@
 package br.com.appdreams.estreladocabula.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,45 +12,22 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
-import com.firebase.ui.FirebaseRecyclerAdapter;
-import com.firebase.ui.auth.core.FirebaseResponse;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import org.json.JSONObject;
 import org.parceler.Parcels;
-import org.parceler.guava.net.MediaType;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.adapter.UsuarioAdapterRecycleView;
 import br.com.appdreams.estreladocabula.adapter.UsuariosAdapterListView;
 import br.com.appdreams.estreladocabula.model.Usuario;
-import br.com.appdreams.estreladocabula.utils.AsyncConnection;
+import br.com.appdreams.estreladocabula.service.SendPushNotificationAsync;
 import br.com.appdreams.estreladocabula.utils.DividerItemDecoration;
-import br.com.appdreams.estreladocabula.utils.FCMNotification;
-import br.com.appdreams.estreladocabula.utils.PushNotifictionHelper;
 import br.com.appdreams.estreladocabula.utils.RecyclerTouchListener;
-import br.com.appdreams.estreladocabula.utils.SendNotifi;
 
-import static android.R.id.message;
-import static br.com.appdreams.estreladocabula.utils.FCMNotification.AUTH_KEY_FCM;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
@@ -162,18 +138,13 @@ public class HomeFragment extends android.support.v4.app.Fragment
                                 Toast.makeText(getApplicationContext(), usuario.getToken(), Toast.LENGTH_SHORT).show();
 
                                 //
-
-                                try {
-
-                                    new AsyncConnection().execute(usuario.getToken());
-                                    //PushNotifictionHelper.sendPushNotification(usuario.getToken());
-                                    //SendNotifi.pushFCMNotification(usuario.getToken());
-                                    //FCMNotification.pushFCMNotification(usuario.getToken());
-                                } catch (Exception e) {
+                                try
+                                {
+                                    new SendPushNotificationAsync().execute(usuario.getToken());
+                                } catch (Exception e)
+                                {
                                     e.printStackTrace();
-                                }/**/
-
-
+                                }
                                 //
 
                             }
