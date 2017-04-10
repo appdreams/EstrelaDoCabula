@@ -22,34 +22,38 @@ public class SendPushNotificationAsync extends AsyncTask<String, Void, Void>
     protected Void doInBackground(String... strings)
     {
 
-        final String userDeviceIdKey = strings[0];
+        final String userDeviceIdKey    = strings[0];
+        final String userMensagem       = strings[1];
         URL url = null;
 
         try
         {
-            url = new URL("https://fcm.googleapis.com/fcm/send");
+            if(userDeviceIdKey != null)
+            {
+                url = new URL("https://fcm.googleapis.com/fcm/send");
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setUseCaches(false);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
+                conn.setUseCaches(false);
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
 
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Authorization","key=AAAAtPcsDXg:APA91bFa1ICKFh-wLfP52MwgkHhDiC26pDsyYmFCmAN2MiO1tqMlMX2ibveABhaNCJiHs-hCLQ8gAoFBUFECAnhB3Ctz-Q3ZT06qTbqMQoNtC8n1vH91Jb8A2ooUAw1JzY8-aVkfwlLO");
-            conn.setRequestProperty("Content-Type","application/json");
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Authorization","key=AAAAtPcsDXg:APA91bFa1ICKFh-wLfP52MwgkHhDiC26pDsyYmFCmAN2MiO1tqMlMX2ibveABhaNCJiHs-hCLQ8gAoFBUFECAnhB3Ctz-Q3ZT06qTbqMQoNtC8n1vH91Jb8A2ooUAw1JzY8-aVkfwlLO");
+                conn.setRequestProperty("Content-Type","application/json");
 
-            JSONObject json = new JSONObject();
-            json.put("to",userDeviceIdKey.trim());
-            JSONObject info = new JSONObject();
-            info.put("title", "Enviando msg");   // Notification title
-            info.put("body", "cadastrou"); // Notification body
-            json.put("notification", info);
+                JSONObject json = new JSONObject();
+                json.put("to",userDeviceIdKey.trim());
+                JSONObject info = new JSONObject();
+                info.put("title", "Estrela do Cabula");   // Notification title
+                info.put("body", userMensagem); // Notification body
+                json.put("notification", info);
 
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(json.toString());
-            wr.flush();
-            conn.getInputStream();
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                wr.write(json.toString());
+                wr.flush();
+                conn.getInputStream();
+            }
 
         }
         catch (MalformedURLException e)

@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -26,6 +27,7 @@ import br.com.appdreams.estreladocabula.adapter.UsuariosAdapterListView;
 import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.service.SendPushNotificationAsync;
 import br.com.appdreams.estreladocabula.utils.DividerItemDecoration;
+import br.com.appdreams.estreladocabula.utils.MarginItemDecoration;
 import br.com.appdreams.estreladocabula.utils.RecyclerTouchListener;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -34,7 +36,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class HomeFragment extends android.support.v4.app.Fragment
 {
 
-
+    private Usuario usuarioLogado;
     private RecyclerView rvListaDeUsuarios;
     private ProgressBar pbCarregando;
     private Query mQuery;
@@ -62,9 +64,12 @@ public class HomeFragment extends android.support.v4.app.Fragment
 
         bindActivity();
         showLoading();
+        cargaUsuarioLogado();
         handleInstanceState(savedInstanceState);
         setupFirebase();
         setupRecyclerview();
+
+
     }
 
     /* Bind Objetos*/
@@ -72,6 +77,16 @@ public class HomeFragment extends android.support.v4.app.Fragment
     {
         pbCarregando        = (ProgressBar) getView().findViewById(R.id.pbCarregando);
         rvListaDeUsuarios   = (RecyclerView) getView().findViewById(R.id.rvListaDeUsuarios);
+    }
+
+    private void cargaUsuarioLogado()
+    {
+        Bundle bundle = this.getArguments();
+        if (bundle != null)
+        {
+            usuarioLogado = bundle.getParcelable("usuario");
+            //Toast.makeText(getApplicationContext(), "===> "+usuarioLogado.getPrimeiroNome(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void cargaDadosTeste()
@@ -121,7 +136,12 @@ public class HomeFragment extends android.support.v4.app.Fragment
 
         rvListaDeUsuarios.setHasFixedSize(true);
         rvListaDeUsuarios.setLayoutManager(mLayoutManager);
+        //
+        //int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.com_facebook_likeboxcountview_text_padding);
+        //rvListaDeUsuarios.addItemDecoration(new MarginItemDecoration(200));
+        //
         rvListaDeUsuarios.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+
         rvListaDeUsuarios.setItemAnimator(new DefaultItemAnimator());
 
         mMyAdapter = new UsuarioAdapterRecycleView(mQuery, Usuario.class, mAdapterItems, mAdapterKeys);
@@ -135,13 +155,14 @@ public class HomeFragment extends android.support.v4.app.Fragment
                             public void onClick(View view, int position)
                             {
                                 Usuario usuario = mAdapterItems.get(position);
-                                Toast.makeText(getApplicationContext(), usuario.getToken(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Você cutucou "+usuario.getPrimeiroNome()+"!", Toast.LENGTH_SHORT).show();
 
                                 //
                                 try
                                 {
-                                    new SendPushNotificationAsync().execute(usuario.getToken());
-                                } catch (Exception e)
+                                    new SendPushNotificationAsync().execute(usuario.getToken(), usuarioLogado.getPrimeiroNome()+" cutucou você!");
+                                }
+                                catch (Exception e)
                                 {
                                     e.printStackTrace();
                                 }

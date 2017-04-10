@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,8 +31,11 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import br.com.appdreams.estreladocabula.R;
 import br.com.appdreams.estreladocabula.fragments.HomeFragment;
+import br.com.appdreams.estreladocabula.model.Usuario;
 import br.com.appdreams.estreladocabula.utils.BaseActivityUtils;
 
 /**
@@ -171,8 +175,13 @@ public class BaseActivity extends BaseActivityUtils
     }
 
     // Adiciona o fragment no centro da tela
-    protected void replaceFragment(Fragment fragment)
+    protected void replaceFragment(Fragment fragment, Usuario usuario)
     {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("usuario", usuario);
+
+        fragment.setArguments(bundle);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }

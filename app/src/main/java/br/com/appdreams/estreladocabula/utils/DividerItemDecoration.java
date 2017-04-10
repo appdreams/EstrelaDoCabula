@@ -5,16 +5,18 @@ package br.com.appdreams.estreladocabula.utils;
  */
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
+import android.util.AttributeSet;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
+import android.graphics.Canvas;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -23,15 +25,11 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private boolean mShowLastDivider = false;
 
 
-    public DividerItemDecoration(Context context, AttributeSet attrs)
-    {
-        final TypedArray a = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
+    public DividerItemDecoration(Context context, AttributeSet attrs) {
+        final TypedArray a = context
+                .obtainStyledAttributes(attrs, new int[]{android.R.attr.listDivider});
         mDivider = a.getDrawable(0);
         a.recycle();
-    }
-
-    public DividerItemDecoration(Fragment fragment, AttributeSet attrs) {
-
     }
 
     public DividerItemDecoration(Context context, AttributeSet attrs, boolean showFirstDivider,
@@ -66,8 +64,16 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         if (getOrientation(parent) == LinearLayoutManager.VERTICAL) {
             outRect.top = mDivider.getIntrinsicHeight();
         } else {
-            outRect.left = mDivider.getIntrinsicWidth();
+
+            outRect.left = mDivider.getIntrinsicWidth() + convertPxToDp(100, view);
+            Log.i("PAULO",Integer.toString(convertPxToDp(100, view)));
         }
+    }
+
+    private int convertPxToDp(int px, View view){
+
+        return Math.round(px/(Resources.getSystem().getDisplayMetrics().xdpi/DisplayMetrics.DENSITY_DEFAULT));
+        //return Math.round(px*(view.getResources().getDisplayMetrics().xdpi/DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override
@@ -84,7 +90,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
         if (orientation == LinearLayoutManager.VERTICAL) {
             size = mDivider.getIntrinsicHeight();
-            left = parent.getPaddingLeft();
+            left = 100;
             right = parent.getWidth() - parent.getPaddingRight();
         } else { //horizontal
             size = mDivider.getIntrinsicWidth();
@@ -103,9 +109,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                 left = child.getLeft() - params.leftMargin;
                 right = left + size;
             }
-            mDivider.setBounds(274, top, 1400, bottom);
-            //mDivider.setBounds(left, top, right, bottom);
-            //Log.i("PAULO",Integer.toString(right));
+            mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
 

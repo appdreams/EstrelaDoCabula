@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity
 
                     setMenu(getUsuario().getTipo());
 
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment(), getUsuario());
 
                     loadingHide();
                 }
@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity
         switch (menuItem.getItemId())
         {
             case R.id.nav_menu_home_m:
-                replaceFragment(new HomeFragment());
+                replaceFragment(new HomeFragment(), getUsuario());
                 break;
             case R.id.nav_item_carros_todos:
                 // Nada aqui pois somente a MainActivity possui menu lateral

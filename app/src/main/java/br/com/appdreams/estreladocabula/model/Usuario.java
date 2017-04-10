@@ -1,12 +1,14 @@
 package br.com.appdreams.estreladocabula.model;
 
+import android.os.Parcelable;
+
 import org.parceler.Parcel;
 
 /**
  * Created by Paulo on 17/03/2017.
  */
 @Parcel
-public class Usuario
+public class Usuario implements Parcelable
 {
     public  String id;
     public  String nome;
@@ -44,6 +46,34 @@ public class Usuario
         this.status         = status;
         this.setToken(token);
     }/**/
+
+    protected Usuario(android.os.Parcel in) {
+        id = in.readString();
+        nome = in.readString();
+        email = in.readString();
+        senha = in.readString();
+        tipo = in.readString();
+        foto = in.readString();
+        acesso = in.readString();
+        online = in.readString();
+        origem = in.readString();
+        bloco = in.readString();
+        apartamento = in.readString();
+        status = in.readString();
+        token = in.readString();
+    }
+
+    public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
+        public Usuario createFromParcel(android.os.Parcel in) {
+            return new Usuario(in);
+        }
+
+        @Override
+        public Usuario[] newArray(int size) {
+            return new Usuario[size];
+        }
+    };
 
     public String getID()
     {
@@ -257,5 +287,33 @@ public class Usuario
         {
             this.token = token;
         }
+    }
+
+    public String getPrimeiroNome()
+    {
+        String[] nomeArray = nome.split(" ");
+        return nomeArray[0];
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(nome);
+        dest.writeString(email);
+        dest.writeString(senha);
+        dest.writeString(tipo);
+        dest.writeString(foto);
+        dest.writeString(acesso);
+        dest.writeString(online);
+        dest.writeString(origem);
+        dest.writeString(bloco);
+        dest.writeString(apartamento);
+        dest.writeString(status);
+        dest.writeString(token);
     }
 }
