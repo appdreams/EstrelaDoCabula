@@ -63,14 +63,15 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
         if (getOrientation(parent) == LinearLayoutManager.VERTICAL) {
             outRect.top = mDivider.getIntrinsicHeight();
+            //outRect.left = mDivider.getIntrinsicWidth() + convertPxToDp(200, view);
         } else {
 
-            outRect.left = mDivider.getIntrinsicWidth() + convertPxToDp(100, view);
-            Log.i("PAULO",Integer.toString(convertPxToDp(100, view)));
+            //outRect.left = mDivider.getIntrinsicWidth() + convertPxToDp(100, view);
+            //Log.i("PAULO",Integer.toString(convertPxToDp(200, view)));
         }
     }
 
-    private int convertPxToDp(int px, View view){
+    private int convertPxToDp(int px){
 
         return Math.round(px/(Resources.getSystem().getDisplayMetrics().xdpi/DisplayMetrics.DENSITY_DEFAULT));
         //return Math.round(px*(view.getResources().getDisplayMetrics().xdpi/DisplayMetrics.DENSITY_DEFAULT));
@@ -84,7 +85,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         // Initialization needed to avoid compiler warning
-        int left = 0, right = 0, top = 0, bottom = 0, size;
+        int left = convertPxToDp(200), right = 0, top = 0, bottom = 0, size;
         int orientation = getOrientation(parent);
         int childCount = parent.getChildCount();
 
